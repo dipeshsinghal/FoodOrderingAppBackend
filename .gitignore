@@ -1,4 +1,6 @@
-.idea/*
-FoodOrderingApp-api/target/*
-FoodOrderingApp-db/target/*
-FoodOrderingApp-service/target/*
+.idea/
+.DS_Store
+FoodOrderingApp-api/target/
+FoodOrderingApp-db/target/
+FoodOrderingApp-service/target/
+classes/
