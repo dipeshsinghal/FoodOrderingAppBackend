@@ -20,7 +20,7 @@ public class CustomerEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "uuid")
+    @Column(name = "uuid", unique = true)
     @Size(max = 200)
     private String uuid;
 
@@ -30,17 +30,15 @@ public class CustomerEntity implements Serializable {
     private String firstName;
 
     @Column(name = "lastname")
-    @NotNull
     @Size(max = 30)
     private String lastName;
 
     @Column(name = "email")
-    @NotNull
     @Size(max = 50)
     private String email;
 
 
-    @Column(name = "contact_number")
+    @Column(name = "contact_number", unique = true)
     @NotNull
     @Size(max = 30)
     private String contactNumber;
