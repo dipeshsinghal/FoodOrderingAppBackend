@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,7 +62,8 @@ public class CustomerController {
             path = "/customer/login",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<LoginResponse> login()
+    public ResponseEntity<LoginResponse> login(
+            @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
         return null;
 
@@ -72,7 +74,8 @@ public class CustomerController {
             path = "/customer/logout",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<LogoutResponse> logout()
+    public ResponseEntity<LogoutResponse> logout(
+            @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
         return null;
     }
@@ -83,6 +86,7 @@ public class CustomerController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UpdateCustomerResponse> updateCustomer(
+            @RequestHeader("authorization") final String authorization,
             final UpdateCustomerRequest updateCustomerRequest) {
         return null;
     }
@@ -93,6 +97,7 @@ public class CustomerController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UpdatePasswordResponse> updatePassword(
+            @RequestHeader("authorization") final String authorization,
             final UpdatePasswordRequest updatePasswordRequest) {
         return null;
     }

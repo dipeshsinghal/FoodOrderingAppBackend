@@ -9,46 +9,37 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/")
-public class AddressController {
+public class OrderController {
 
     @RequestMapping(
-            method = RequestMethod.POST,
-            path = "/address",
+            method = RequestMethod.GET,
+            path = "/order/coupon/{coupon_name}",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<SaveAddressResponse> saveAddress(
+    public ResponseEntity<CustomerOrderResponse> getCustomerOrderCupon(
             @RequestHeader("authorization") final String authorization,
-            final SaveAddressRequest saveAddressRequest) {
+            @PathVariable("coupon_name") final String couponName) {
         return null;
     }
 
     @RequestMapping(
             method = RequestMethod.GET,
-            path = "/address/customer",
+            path = "/order",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<AddressListResponse> getAddressList(
+    public ResponseEntity<CustomerOrderResponse> getCustomerOrder(
             @RequestHeader("authorization") final String authorization) {
         return null;
     }
 
     @RequestMapping(
-            method = RequestMethod.DELETE,
-            path = "/address/{address_id}",
+            method = RequestMethod.POST,
+            path = "/order",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<DeleteAddressResponse> deleteAddress(
+    public ResponseEntity<SaveOrderResponse> saveOrder(
             @RequestHeader("authorization") final String authorization,
-            @PathVariable("address_id") final UUID addressId) {
-        return null;
-    }
-
-    @RequestMapping(
-            method = RequestMethod.GET,
-            path = "/states",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<StatesListResponse> getStatesList() {
+            SaveOrderRequest saveOrderRequest) {
         return null;
     }
 }
