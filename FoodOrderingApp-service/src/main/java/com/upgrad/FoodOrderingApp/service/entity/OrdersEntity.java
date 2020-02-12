@@ -27,24 +27,27 @@ public class OrdersEntity implements Serializable {
     @NotNull
     private BigDecimal bill;
 
+    @JoinColumn(name = "coupon_id")
+    private CouponEntity coupon;
+
     @Column(name = "timestamp")
     @NotNull
     private Date timestamp;
 
-    @Column(name = "payment_id")
-    private Integer paymentId;
+    @JoinColumn(name = "payment_id")
+    private PaymentEntity payment;
 
-    @Column(name = "customer_id")
+    @JoinColumn(name = "customer_id")
     @NotNull
-    private Integer customerId;
+    private CustomerEntity customer;
 
-    @Column(name = "address_id")
+    @JoinColumn(name = "address_id")
     @NotNull
-    private Integer addressId;
+    private AddressEntity address;
 
-    @Column(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id")
     @NotNull
-    private Integer restaurantId;
+    private RestaurantEntity restaurant;
 
     public long getId() {
         return id;
@@ -78,36 +81,44 @@ public class OrdersEntity implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public Integer getPaymentId() {
-        return paymentId;
+    public CouponEntity getCoupon() {
+        return coupon;
     }
 
-    public void setPaymentId(Integer paymentId) {
-        this.paymentId = paymentId;
+    public void setCoupon(CouponEntity coupon) {
+        this.coupon = coupon;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public PaymentEntity getPayment() {
+        return payment;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setPayment(PaymentEntity payment) {
+        this.payment = payment;
     }
 
-    public Integer getAddressId() {
-        return addressId;
+    public CustomerEntity getCustomer() {
+        return customer;
     }
 
-    public void setAddressId(Integer addressId) {
-        this.addressId = addressId;
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
     }
 
-    public Integer getRestaurantId() {
-        return restaurantId;
+    public AddressEntity getAddress() {
+        return address;
     }
 
-    public void setRestaurantId(Integer restaurantId) {
-        this.restaurantId = restaurantId;
+    public void setAddress(AddressEntity address) {
+        this.address = address;
+    }
+
+    public RestaurantEntity getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(RestaurantEntity restaurant) {
+        this.restaurant = restaurant;
     }
 
     @Override

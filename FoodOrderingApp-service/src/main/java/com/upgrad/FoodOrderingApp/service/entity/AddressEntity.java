@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
+import javax.swing.plaf.nimbus.State;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -37,8 +38,8 @@ public class AddressEntity implements Serializable {
     @Size(max = 30)
     private String pincode;
 
-    @Column(name = "State_id")
-    private Integer stateId;
+    @JoinColumn(name = "State_id")
+    private StateEntity state;
 
     @Column(name = "active")
     private Integer active = 1;
@@ -91,12 +92,12 @@ public class AddressEntity implements Serializable {
         this.pincode = pincode;
     }
 
-    public Integer getStateId() {
-        return stateId;
+    public StateEntity getState() {
+        return state;
     }
 
-    public void setStateId(Integer stateId) {
-        this.stateId = stateId;
+    public void setState(StateEntity state) {
+        this.state = state;
     }
 
     public Integer getActive() {

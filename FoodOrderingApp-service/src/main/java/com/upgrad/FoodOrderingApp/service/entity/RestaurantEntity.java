@@ -44,9 +44,9 @@ public class RestaurantEntity implements Serializable {
     @NotNull
     private Integer numberOfCustomersRated = 0;
 
-    @Column(name = "address_id")
+    @JoinColumn(name = "address_id")
     @NotNull
-    private Integer addressId;
+    private AddressEntity address;
 
     public long getId() {
         return id;
@@ -104,12 +104,12 @@ public class RestaurantEntity implements Serializable {
         this.numberOfCustomersRated = numberOfCustomersRated;
     }
 
-    public Integer getAddressId() {
-        return addressId;
+    public AddressEntity getAddress() {
+        return address;
     }
 
-    public void setAddressId(Integer addressId) {
-        this.addressId = addressId;
+    public void setAddress(AddressEntity address) {
+        this.address = address;
     }
 
     @Override
