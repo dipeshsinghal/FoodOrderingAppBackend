@@ -1,6 +1,10 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
+import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
+import com.upgrad.FoodOrderingApp.service.exception.InvalidRatingException;
+import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +31,8 @@ public class RestaurantController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantListResponse> getRestaurantListByName(
-                @PathVariable("reastaurant_name") final String reastaurantName) {
+            @PathVariable("reastaurant_name") final String reastaurantName)
+            throws RestaurantNotFoundException {
         return null;
     }
 
@@ -37,7 +42,8 @@ public class RestaurantController {
             path = "/restaurant/category/{category_id}",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<RestaurantListResponse> getRestaurantListByCategory(final UUID categoryId) {
+    public ResponseEntity<RestaurantListResponse> getRestaurantListByCategory(final UUID categoryId)
+            throws CategoryNotFoundException {
         return null;
     }
 
@@ -47,7 +53,8 @@ public class RestaurantController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantDetailsResponse> getRestaurantDetails(
-            @PathVariable("restaurant_id") final UUID restaurantId) {
+            @PathVariable("restaurant_id") final UUID restaurantId)
+            throws RestaurantNotFoundException {
         return null;
     }
 
@@ -59,7 +66,8 @@ public class RestaurantController {
     public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(
             @RequestHeader("authorization") final String authorization,
             @PathVariable("restaurant_id") final UUID restaurantId,
-            BigDecimal customerRating) {
+            BigDecimal customerRating)
+            throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
         return null;
     }
 }

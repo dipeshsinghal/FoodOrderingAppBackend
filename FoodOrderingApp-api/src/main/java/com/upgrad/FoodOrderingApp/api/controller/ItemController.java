@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.ItemListResponse;
+import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,8 @@ public class ItemController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ItemListResponse> getItemList(
-            @PathVariable("restaurant_id") final UUID restaurantId) {
+            @PathVariable("restaurant_id") final UUID restaurantId)
+            throws RestaurantNotFoundException {
         return null;
     }
 }

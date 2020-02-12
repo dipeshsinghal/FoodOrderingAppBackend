@@ -3,8 +3,10 @@ package com.upgrad.FoodOrderingApp.api.controller;
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.SignupBusinessService;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
+import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
+import com.upgrad.FoodOrderingApp.service.exception.UpdateCustomerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -64,7 +66,7 @@ public class CustomerController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<LoginResponse> login(
             @RequestHeader("authorization") final String authorization)
-            throws AuthorizationFailedException {
+            throws AuthenticationFailedException {
         return null;
 
     }
@@ -87,7 +89,8 @@ public class CustomerController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UpdateCustomerResponse> updateCustomer(
             @RequestHeader("authorization") final String authorization,
-            final UpdateCustomerRequest updateCustomerRequest) {
+            final UpdateCustomerRequest updateCustomerRequest)
+            throws UpdateCustomerException, AuthorizationFailedException {
         return null;
     }
 
@@ -98,7 +101,8 @@ public class CustomerController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UpdatePasswordResponse> updatePassword(
             @RequestHeader("authorization") final String authorization,
-            final UpdatePasswordRequest updatePasswordRequest) {
+            final UpdatePasswordRequest updatePasswordRequest)
+            throws UpdateCustomerException, AuthorizationFailedException {
         return null;
     }
 }

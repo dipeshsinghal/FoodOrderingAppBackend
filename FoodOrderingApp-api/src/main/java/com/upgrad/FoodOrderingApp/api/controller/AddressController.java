@@ -1,6 +1,9 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
+import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
+import com.upgrad.FoodOrderingApp.service.exception.SaveAddressException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +21,8 @@ public class AddressController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SaveAddressResponse> saveAddress(
             @RequestHeader("authorization") final String authorization,
-            final SaveAddressRequest saveAddressRequest) {
+            final SaveAddressRequest saveAddressRequest)
+            throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
         return null;
     }
 
@@ -28,7 +32,8 @@ public class AddressController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AddressListResponse> getAddressList(
-            @RequestHeader("authorization") final String authorization) {
+            @RequestHeader("authorization") final String authorization)
+            throws AuthorizationFailedException {
         return null;
     }
 
@@ -39,7 +44,8 @@ public class AddressController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<DeleteAddressResponse> deleteAddress(
             @RequestHeader("authorization") final String authorization,
-            @PathVariable("address_id") final UUID addressId) {
+            @PathVariable("address_id") final UUID addressId)
+            throws AuthorizationFailedException, AddressNotFoundException {
         return null;
     }
 
