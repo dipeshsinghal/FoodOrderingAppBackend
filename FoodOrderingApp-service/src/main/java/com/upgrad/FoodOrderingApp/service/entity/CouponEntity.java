@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "coupon", schema = "restaurantdb")
+@Table(name = "coupon", schema = "public")
 public class CouponEntity implements Serializable {
     @Id
     @Column(name = "id")

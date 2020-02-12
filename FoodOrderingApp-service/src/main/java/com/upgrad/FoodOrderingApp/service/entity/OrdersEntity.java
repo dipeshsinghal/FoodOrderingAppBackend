@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name = "orders", schema = "restaurantdb")
+@Table(name = "orders", schema = "public")
 public class OrdersEntity implements Serializable {
     @Id
     @Column(name = "id")

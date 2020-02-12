@@ -9,10 +9,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "customer", schema = "restaurantdb")
-@NamedQueries({
 
+@Entity
+@Table(name = "customer", schema = "public")
+@NamedQueries({
+        @NamedQuery(name = "customerByContactNumber", query = "select c from CustomerEntity c where c.contactNumber = :contactNumber")
 })
 public class CustomerEntity implements Serializable {
     @Id

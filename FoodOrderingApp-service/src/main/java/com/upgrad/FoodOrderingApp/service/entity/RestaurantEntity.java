@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "restaurant", schema = "restaurantdb")
+@Table(name = "restaurant", schema = "public")
 public class RestaurantEntity implements Serializable {
     @Id
     @Column(name = "id")
