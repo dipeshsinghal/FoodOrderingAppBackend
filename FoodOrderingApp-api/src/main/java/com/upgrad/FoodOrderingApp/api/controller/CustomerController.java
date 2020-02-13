@@ -1,5 +1,6 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
+import com.upgrad.FoodOrderingApp.api.common.Utility;
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.businness.PasswordCryptographyProvider;
@@ -122,13 +123,12 @@ public class CustomerController {
             @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
 
-        CustomerAuthEntity customerAuthEntity = customerService.logout(authorization);
+        CustomerAuthEntity customerAuthEntity = customerService.logout(Utility.getTokenFromAuthorizationField(authorization));
 
-
-        //create response with signed out customer uuid
-        LogoutResponse signoutResponse = new LogoutResponse().id(customerAuthEntity.getCustomer().getUuid()).message("SIGNED OUT SUCCESSFULLY");
+        //create response with logoutResponse customer uuid
+        LogoutResponse logoutResponse = new LogoutResponse().id(customerAuthEntity.getCustomer().getUuid()).message("SIGNED OUT SUCCESSFULLY");
         HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<LogoutResponse>(signoutResponse, headers, HttpStatus.OK);
+        return new ResponseEntity<LogoutResponse>(logoutResponse, headers, HttpStatus.OK);
 
     }
 
@@ -142,7 +142,8 @@ public class CustomerController {
             @RequestBody final UpdateCustomerRequest updateCustomerRequest)
             throws UpdateCustomerException, AuthorizationFailedException {
 
-        CustomerEntity customerEntity = new CustomerEntity();
+        // Call authenticationService with access token came in authorization field.
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         CustomerEntity updateCustomerEntity = customerService.updateCustomer(customerEntity);
 
@@ -163,7 +164,7 @@ public class CustomerController {
             throws UpdateCustomerException, AuthorizationFailedException {
 
         // Call authenticationService with access token came in authorization field.
-        CustomerEntity customerEntity = customerService.getCustomer(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         CustomerEntity updateCustomerEntity = customerService.updateCustomerPassword(updatePasswordRequest.getOldPassword(),updatePasswordRequest.getOldPassword(), customerEntity);
 
