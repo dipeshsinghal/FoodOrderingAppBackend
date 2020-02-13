@@ -1,8 +1,8 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
-import com.upgrad.FoodOrderingApp.service.businness.AuthenticationService;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
+import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SaveAddressException;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class AddressController {
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private CustomerService customerService;
 
     @RequestMapping(
             method = RequestMethod.POST,
@@ -30,8 +30,7 @@ public class AddressController {
             final SaveAddressRequest saveAddressRequest)
             throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
 
-        // Call authenticationService with access token came in authorization field.
-        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(authorization);
 
         return null;
     }
@@ -45,8 +44,7 @@ public class AddressController {
             @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
 
-        // Call authenticationService with access token came in authorization field.
-        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(authorization);
 
         return null;
     }
@@ -61,8 +59,7 @@ public class AddressController {
             @PathVariable("address_id") final UUID addressId)
             throws AuthorizationFailedException, AddressNotFoundException {
 
-        // Call authenticationService with access token came in authorization field.
-        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(authorization);
 
         return null;
     }

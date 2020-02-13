@@ -1,11 +1,9 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
-import com.upgrad.FoodOrderingApp.service.businness.AuthenticationService;
-import com.upgrad.FoodOrderingApp.service.businness.JwtTokenProvider;
+import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.businness.PasswordCryptographyProvider;
-import com.upgrad.FoodOrderingApp.service.businness.SignupBusinessService;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
@@ -29,10 +27,7 @@ import java.util.UUID;
 public class CustomerController {
 
     @Autowired
-    private SignupBusinessService signupBusinessService;
-
-    @Autowired
-    private AuthenticationService authenticationService;
+    CustomerService customerService;
 
     @Autowired
     private PasswordCryptographyProvider passwordCryptographyProvider;
@@ -61,8 +56,8 @@ public class CustomerController {
         customerEntity.setContactNumber(signupCustomerRequest.getContactNumber());
         customerEntity.setPassword(signupCustomerRequest.getPassword());
 
-        //Call signupBusinessService to create a new customer Entity
-        final CustomerEntity createdCustmerEntity = signupBusinessService.signup(customerEntity);
+        //Call CustomerService to create a new customer Entity
+        CustomerEntity createdCustmerEntity = customerService.saveCustomer(customerEntity);
 
         //create response with create customer uuid
         SignupCustomerResponse signupCustomerResponse = new SignupCustomerResponse().id(createdCustmerEntity.getUuid()).status("CUSTOMER SUCCESSFULLY REGISTERED");
@@ -98,16 +93,13 @@ public class CustomerController {
             throw new AuthenticationFailedException("ATH-003","Incorrect format of decoded customer name and password");
         }
 
-        //call authenticationService service to generate customer Auth Token for any further communication
-        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByUserNamePassword(decodedUserNamePassword[0], decodedUserNamePassword[1]);
-
         //get CustomerEntity from Auth Token
-        CustomerEntity customerEntity = customerAuthTokenEntity.getCustomer();
+        CustomerEntity customerEntity = customerService.getCustomer(authorization);
 
         //send response with customer uuid and access token in HttpHeader
         LoginResponse loginResponse = new LoginResponse().id(customerEntity.getUuid()).message("SIGNED IN SUCCESSFULLY");
         HttpHeaders headers = new HttpHeaders();
-        headers.add("access_token", customerAuthTokenEntity.getAccessToken());
+        //headers.add("access_token", customerAuthEntity.getAccessToken());
 
         return new ResponseEntity<LoginResponse>(loginResponse, headers, HttpStatus.OK);
 
@@ -122,17 +114,11 @@ public class CustomerController {
             @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
 
-        // Call authenticationService with access token came in authorization field.
-        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+        CustomerAuthEntity customerAuthEntity = customerService.logout(authorization);
 
-        //Set logout time
-        customerAuthTokenEntity.setLogoutAt(ZonedDateTime.now());
-
-        //update customerAuthTokenEntity with updated logout time.
-        authenticationService.updateAuthToken(customerAuthTokenEntity);
 
         //create response with signed out customer uuid
-        LogoutResponse signoutResponse = new LogoutResponse().id(customerAuthTokenEntity.getCustomer().getUuid()).message("SIGNED OUT SUCCESSFULLY");
+        LogoutResponse signoutResponse = new LogoutResponse().id(customerAuthEntity.getCustomer().getUuid()).message("SIGNED OUT SUCCESSFULLY");
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<LogoutResponse>(signoutResponse, headers, HttpStatus.OK);
 
@@ -148,11 +134,12 @@ public class CustomerController {
             final UpdateCustomerRequest updateCustomerRequest)
             throws UpdateCustomerException, AuthorizationFailedException {
 
-        // Call authenticationService with access token came in authorization field.
-        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+        CustomerEntity customerEntity = new CustomerEntity();
+
+        CustomerEntity updateCustomerEntity = customerService.updateCustomer(customerEntity);
 
         //create response with create customer uuid
-        UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse().id("").status("Service Not Implemented");
+        UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse().id(updateCustomerEntity.getUuid()).status("Service Not Implemented");
 
         return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse, HttpStatus.CREATED);
     }
@@ -168,10 +155,12 @@ public class CustomerController {
             throws UpdateCustomerException, AuthorizationFailedException {
 
         // Call authenticationService with access token came in authorization field.
-        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(authorization);
+
+        CustomerEntity updateCustomerEntity = customerService.updateCustomerPassword(updatePasswordRequest.getOldPassword(),updatePasswordRequest.getOldPassword(), customerEntity);
 
         //create response with create customer uuid
-        UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse().id("").status("Service Not Implemented");
+        UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse().id(updateCustomerEntity.getUuid()).status("Service Not Implemented");
 
         return new ResponseEntity<UpdatePasswordResponse>(updatePasswordResponse, HttpStatus.CREATED);
     }

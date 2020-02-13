@@ -1,8 +1,8 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
-import com.upgrad.FoodOrderingApp.service.businness.AuthenticationService;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
+import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private CustomerService customerService;
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -27,7 +27,7 @@ public class OrderController {
             throws AuthorizationFailedException, CouponNotFoundException {
 
         // Call authenticationService with access token came in authorization field.
-        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(authorization);
 
         return null;
     }
@@ -42,7 +42,7 @@ public class OrderController {
             throws AuthorizationFailedException {
 
         // Call authenticationService with access token came in authorization field.
-        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(authorization);
 
         return null;
     }
@@ -60,7 +60,7 @@ public class OrderController {
             RestaurantNotFoundException, ItemNotFoundException {
 
         // Call authenticationService with access token came in authorization field.
-        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(authorization);
 
         return null;
     }

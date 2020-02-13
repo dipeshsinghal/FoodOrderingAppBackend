@@ -1,6 +1,6 @@
 package com.upgrad.FoodOrderingApp.service.dao;
 
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -14,19 +14,19 @@ public class CustomerAuthDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public CustomerAuthTokenEntity createAuthToken(final CustomerAuthTokenEntity customerAuthTokenEntity) {
+    public CustomerAuthEntity createAuthToken(final CustomerAuthEntity customerAuthTokenEntity) {
         entityManager.persist(customerAuthTokenEntity);
         return customerAuthTokenEntity;
     }
 
-    public CustomerAuthTokenEntity updateAuthToken(final CustomerAuthTokenEntity customerAuthTokenEntity) {
+    public CustomerAuthEntity updateAuthToken(final CustomerAuthEntity customerAuthTokenEntity) {
         entityManager.merge(customerAuthTokenEntity);
         return customerAuthTokenEntity;
     }
 
-    public CustomerAuthTokenEntity getAuthTokenEntityByAccessToken(final String accessToken) {
+    public CustomerAuthEntity getAuthTokenEntityByAccessToken(final String accessToken) {
         try {
-            return entityManager.createNamedQuery("customerAuthTokenByAccessToken", CustomerAuthTokenEntity.class).setParameter("accessToken", accessToken).getSingleResult();
+            return entityManager.createNamedQuery("customerAuthTokenByAccessToken", CustomerAuthEntity.class).setParameter("accessToken", accessToken).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }
