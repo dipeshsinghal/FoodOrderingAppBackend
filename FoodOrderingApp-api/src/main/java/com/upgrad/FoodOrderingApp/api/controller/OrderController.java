@@ -1,7 +1,10 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.service.businness.AuthenticationService;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
 import com.upgrad.FoodOrderingApp.service.exception.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/")
 public class OrderController {
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -19,6 +25,10 @@ public class OrderController {
             @RequestHeader("authorization") final String authorization,
             @PathVariable("coupon_name") final String couponName)
             throws AuthorizationFailedException, CouponNotFoundException {
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+
         return null;
     }
 
@@ -30,6 +40,10 @@ public class OrderController {
     public ResponseEntity<CustomerOrderResponse> getCustomerOrder(
             @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+
         return null;
     }
 
@@ -44,6 +58,10 @@ public class OrderController {
             throws AuthorizationFailedException, CouponNotFoundException,
             AddressNotFoundException, PaymentMethodNotFoundException,
             RestaurantNotFoundException, ItemNotFoundException {
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+
         return null;
     }
 }

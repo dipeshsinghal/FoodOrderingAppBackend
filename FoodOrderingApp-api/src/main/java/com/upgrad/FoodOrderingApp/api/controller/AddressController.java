@@ -1,9 +1,12 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.service.businness.AuthenticationService;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SaveAddressException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,9 @@ import java.util.UUID;
 @RequestMapping("/")
 public class AddressController {
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @RequestMapping(
             method = RequestMethod.POST,
             path = "/address",
@@ -23,6 +29,10 @@ public class AddressController {
             @RequestHeader("authorization") final String authorization,
             final SaveAddressRequest saveAddressRequest)
             throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+
         return null;
     }
 
@@ -34,6 +44,10 @@ public class AddressController {
     public ResponseEntity<AddressListResponse> getAddressList(
             @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+
         return null;
     }
 
@@ -46,6 +60,10 @@ public class AddressController {
             @RequestHeader("authorization") final String authorization,
             @PathVariable("address_id") final UUID addressId)
             throws AuthorizationFailedException, AddressNotFoundException {
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+
         return null;
     }
 

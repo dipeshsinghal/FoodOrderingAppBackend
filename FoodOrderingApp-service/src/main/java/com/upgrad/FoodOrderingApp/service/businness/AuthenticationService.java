@@ -63,8 +63,14 @@ public class AuthenticationService {
     }
 
     public CustomerAuthTokenEntity authenticateByAccessToken(final String accessToken) throws AuthorizationFailedException{
-            CustomerAuthTokenEntity customerAuthTokenEntity = customerAuthDao.getAuthTokenEntityByAccessToken(accessToken);
+        CustomerAuthTokenEntity customerAuthTokenEntity = customerAuthDao.getAuthTokenEntityByAccessToken(accessToken);
         if( customerAuthTokenEntity != null ) {
+            // Token exist but customer logged out already or token expired
+            if ( customerAuthTokenEntity.getLogoutAt() != null ) {
+                throw new AuthorizationFailedException("ATHR-002","Customer is logged out. Log in again to access this endpoint.");
+            } else if (customerAuthTokenEntity.getExpiresAt().compareTo(ZonedDateTime.now()) <= 0 ) {
+                throw new AuthorizationFailedException("ATHR-003","Your session is expired. Log in again to access this endpoint.");
+            }
             return customerAuthTokenEntity;
         } else {
             throw new AuthorizationFailedException("ATHR-001", "User has not signed in");

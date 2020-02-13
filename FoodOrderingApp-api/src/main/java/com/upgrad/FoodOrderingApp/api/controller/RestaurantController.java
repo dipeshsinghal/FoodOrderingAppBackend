@@ -1,10 +1,13 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.service.businness.AuthenticationService;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.InvalidRatingException;
 import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/")
 public class RestaurantController {
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -68,6 +74,10 @@ public class RestaurantController {
             @PathVariable("restaurant_id") final UUID restaurantId,
             BigDecimal customerRating)
             throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+
         return null;
     }
 }

@@ -125,13 +125,6 @@ public class CustomerController {
         // Call authenticationService with access token came in authorization field.
         CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
 
-        // Token exist but customer logged out already or token expired
-        if ( customerAuthTokenEntity.getLogoutAt() != null ) {
-            throw new AuthorizationFailedException("ATHR-002","Customer is logged out. Log in again to access this endpoint.");
-        } else if (customerAuthTokenEntity.getExpiresAt().compareTo(ZonedDateTime.now()) <= 0 ) {
-            throw new AuthorizationFailedException("ATHR-003","Your session is expired. Log in again to access this endpoint.");
-        }
-
         //Set logout time
         customerAuthTokenEntity.setLogoutAt(ZonedDateTime.now());
 
@@ -154,7 +147,14 @@ public class CustomerController {
             @RequestHeader("authorization") final String authorization,
             final UpdateCustomerRequest updateCustomerRequest)
             throws UpdateCustomerException, AuthorizationFailedException {
-        return null;
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+
+        //create response with create customer uuid
+        UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse().id("").status("Service Not Implemented");
+
+        return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse, HttpStatus.CREATED);
     }
 
     @RequestMapping(
@@ -166,6 +166,13 @@ public class CustomerController {
             @RequestHeader("authorization") final String authorization,
             final UpdatePasswordRequest updatePasswordRequest)
             throws UpdateCustomerException, AuthorizationFailedException {
-        return null;
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+
+        //create response with create customer uuid
+        UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse().id("").status("Service Not Implemented");
+
+        return new ResponseEntity<UpdatePasswordResponse>(updatePasswordResponse, HttpStatus.CREATED);
     }
 }
