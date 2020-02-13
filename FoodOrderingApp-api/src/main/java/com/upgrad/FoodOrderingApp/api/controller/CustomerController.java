@@ -142,15 +142,20 @@ public class CustomerController {
             @RequestBody final UpdateCustomerRequest updateCustomerRequest)
             throws UpdateCustomerException, AuthorizationFailedException {
 
+        if( updateCustomerRequest.getFirstName() == null ||
+                updateCustomerRequest.getFirstName().isEmpty()){
+            throw new UpdateCustomerException("UCR-002", "First name field should not be empty");
+        }
+
         // Call authenticationService with access token came in authorization field.
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        CustomerEntity updateCustomerEntity = customerService.updateCustomer(customerEntity);
+        customerService.updateCustomer(customerEntity);
 
         //create response with create customer uuid
-        UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse().id(updateCustomerEntity.getUuid()).status("Service Not Implemented");
+        UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse().id(customerEntity.getUuid()).status("CUSTOMER DETAILS UPDATED SUCCESSFULLY");
 
-        return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse, HttpStatus.CREATED);
+        return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse, HttpStatus.OK);
     }
 
     @RequestMapping(
@@ -163,19 +168,20 @@ public class CustomerController {
             @RequestBody final UpdatePasswordRequest updatePasswordRequest)
             throws UpdateCustomerException, AuthorizationFailedException {
 
-        // Call authenticationService with access token came in authorization field.
-        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
-
         if(updatePasswordRequest.getOldPassword() == null ||
             updatePasswordRequest.getOldPassword().isEmpty() ||
             updatePasswordRequest.getNewPassword() == null ||
             updatePasswordRequest.getNewPassword().isEmpty()) {
             throw new UpdateCustomerException("UCR-003", "No field should be empty");
         }
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
+
         customerService.updateCustomerPassword(updatePasswordRequest.getOldPassword(),updatePasswordRequest.getNewPassword(), customerEntity);
 
         //create response with create customer uuid
-        UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse().id(customerEntity.getUuid()).status("Service Not Implemented");
+        UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse().id(customerEntity.getUuid()).status("CUSTOMER PASSWORD UPDATED SUCCESSFULLY");
 
         return new ResponseEntity<UpdatePasswordResponse>(updatePasswordResponse, HttpStatus.OK);
     }

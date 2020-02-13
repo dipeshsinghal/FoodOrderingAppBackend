@@ -158,7 +158,7 @@ public class CustomerService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity updateCustomer(CustomerEntity customerEntity) throws AuthorizationFailedException {
-        return null;
+        return customerDao.updateCustomer(customerEntity);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
