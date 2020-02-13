@@ -14,10 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -38,7 +35,7 @@ public class CustomerController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SignupCustomerResponse> customerSignup(
-            final SignupCustomerRequest signupCustomerRequest)
+            @RequestBody final SignupCustomerRequest signupCustomerRequest)
             throws SignUpRestrictedException {
 
 
@@ -131,7 +128,7 @@ public class CustomerController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UpdateCustomerResponse> updateCustomer(
             @RequestHeader("authorization") final String authorization,
-            final UpdateCustomerRequest updateCustomerRequest)
+            @RequestBody final UpdateCustomerRequest updateCustomerRequest)
             throws UpdateCustomerException, AuthorizationFailedException {
 
         CustomerEntity customerEntity = new CustomerEntity();
@@ -151,7 +148,7 @@ public class CustomerController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UpdatePasswordResponse> updatePassword(
             @RequestHeader("authorization") final String authorization,
-            final UpdatePasswordRequest updatePasswordRequest)
+            @RequestBody final UpdatePasswordRequest updatePasswordRequest)
             throws UpdateCustomerException, AuthorizationFailedException {
 
         // Call authenticationService with access token came in authorization field.
