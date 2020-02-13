@@ -113,20 +113,21 @@ public class CustomerService {
             throw new AuthenticationFailedException("ATH-002", "Invalid Credentials");
         }
 
-        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(encryptedPassword);
-        CustomerAuthEntity customerAuthTokenEntity = new CustomerAuthEntity();
-        customerAuthTokenEntity.setCustomer(customerEntity);
+        CustomerAuthEntity customerAuthEntity = new CustomerAuthEntity();
+        customerAuthEntity.setCustomer(customerEntity);
+
         final ZonedDateTime now = ZonedDateTime.now();
         final ZonedDateTime expiresAt = now.plusHours(8);
 
-        customerAuthTokenEntity.setAccessToken(jwtTokenProvider.generateToken(customerEntity.getUuid(), now, expiresAt));
-        customerAuthTokenEntity.setLoginAt(now);
-        customerAuthTokenEntity.setExpiresAt(expiresAt);
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(encryptedPassword);
 
-        customerAuthDao.createAuthToken(customerAuthTokenEntity);
+        customerAuthEntity.setAccessToken(jwtTokenProvider.generateToken(customerEntity.getUuid(), now, expiresAt));
+        customerAuthEntity.setLoginAt(now);
+        customerAuthEntity.setExpiresAt(expiresAt);
 
-        customerDao.updateCustomer(customerEntity);
-        return customerAuthTokenEntity;
+        customerAuthDao.createAuthToken(customerAuthEntity);
+
+        return customerAuthEntity;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

@@ -101,12 +101,13 @@ public class CustomerController {
         }
 
         //get CustomerEntity from Auth Token
-        CustomerEntity customerEntity = customerService.getCustomer(authorization);
+        CustomerAuthEntity customerAuthEntity = customerService.authenticate(decodedUserNamePassword[0],decodedUserNamePassword[1]);
+
 
         //send response with customer uuid and access token in HttpHeader
-        LoginResponse loginResponse = new LoginResponse().id(customerEntity.getUuid()).message("SIGNED IN SUCCESSFULLY");
+        LoginResponse loginResponse = new LoginResponse().id(customerAuthEntity.getCustomer().getUuid()).message("SIGNED IN SUCCESSFULLY");
         HttpHeaders headers = new HttpHeaders();
-        //headers.add("access_token", customerAuthEntity.getAccessToken());
+        headers.add("access-token", customerAuthEntity.getAccessToken());
 
         return new ResponseEntity<LoginResponse>(loginResponse, headers, HttpStatus.OK);
 

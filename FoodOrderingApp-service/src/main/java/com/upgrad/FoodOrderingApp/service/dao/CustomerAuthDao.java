@@ -14,14 +14,14 @@ public class CustomerAuthDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public CustomerAuthEntity createAuthToken(final CustomerAuthEntity customerAuthTokenEntity) {
-        entityManager.persist(customerAuthTokenEntity);
-        return customerAuthTokenEntity;
+    public CustomerAuthEntity createAuthToken(final CustomerAuthEntity customerAuthEntity) {
+        entityManager.persist(customerAuthEntity);
+        return customerAuthEntity;
     }
 
-    public CustomerAuthEntity updateAuthToken(final CustomerAuthEntity customerAuthTokenEntity) {
-        entityManager.merge(customerAuthTokenEntity);
-        return customerAuthTokenEntity;
+    public CustomerAuthEntity updateAuthToken(final CustomerAuthEntity customerAuthEntity) {
+        entityManager.merge(customerAuthEntity);
+        return customerAuthEntity;
     }
 
     public CustomerAuthEntity getAuthTokenEntityByAccessToken(final String accessToken) {
