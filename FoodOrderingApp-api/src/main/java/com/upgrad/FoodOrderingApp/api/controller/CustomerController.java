@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @RestController
@@ -64,9 +65,9 @@ public class CustomerController {
         final CustomerEntity createdCustmerEntity = signupBusinessService.signup(customerEntity);
 
         //create response with create customer uuid
-        SignupCustomerResponse userResponse = new SignupCustomerResponse().id(createdCustmerEntity.getUuid()).status("CUSTOMER SUCCESSFULLY REGISTERED");
+        SignupCustomerResponse signupCustomerResponse = new SignupCustomerResponse().id(createdCustmerEntity.getUuid()).status("CUSTOMER SUCCESSFULLY REGISTERED");
 
-        return new ResponseEntity<SignupCustomerResponse>(userResponse, HttpStatus.CREATED);
+        return new ResponseEntity<SignupCustomerResponse>(signupCustomerResponse, HttpStatus.CREATED);
 
     }
 
@@ -77,7 +78,7 @@ public class CustomerController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<LoginResponse> login(
             @RequestHeader("authorization") final String authorization)
-            throws AuthenticationFailedException {
+            throws AuthenticationFailedException, AuthorizationFailedException {
 
         //split and extract authorization base 64 code string from "authorization" field
         String[] base64EncodedString = authorization.split("Basic ");
@@ -90,20 +91,20 @@ public class CustomerController {
 
         String decodedString = new String(decodedArray);
 
-        //decoded string contain username and password separated by ":"
+        //decoded string contain username(contact number) and password separated by ":"
         String[] decodedUserNamePassword = decodedString.split(":");
 
         if ( decodedUserNamePassword.length != 2 ) {
             throw new AuthenticationFailedException("ATH-003","Incorrect format of decoded customer name and password");
         }
 
-        //call authenticationService service to generate user Auth Token for any further communication
+        //call authenticationService service to generate customer Auth Token for any further communication
         CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByUserNamePassword(decodedUserNamePassword[0], decodedUserNamePassword[1]);
 
         //get CustomerEntity from Auth Token
         CustomerEntity customerEntity = customerAuthTokenEntity.getCustomer();
 
-        //send response with user uuid and access token in HttpHeader
+        //send response with customer uuid and access token in HttpHeader
         LoginResponse loginResponse = new LoginResponse().id(customerEntity.getUuid()).message("SIGNED IN SUCCESSFULLY");
         HttpHeaders headers = new HttpHeaders();
         headers.add("access_token", customerAuthTokenEntity.getAccessToken());
@@ -120,7 +121,28 @@ public class CustomerController {
     public ResponseEntity<LogoutResponse> logout(
             @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
-        return null;
+
+        // Call authenticationService with access token came in authorization field.
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByAccessToken(authorization);
+
+        // Token exist but customer logged out already or token expired
+        if ( customerAuthTokenEntity.getLogoutAt() != null ) {
+            throw new AuthorizationFailedException("ATHR-002","Customer is logged out. Log in again to access this endpoint.");
+        } else if (customerAuthTokenEntity.getExpiresAt().compareTo(ZonedDateTime.now()) <= 0 ) {
+            throw new AuthorizationFailedException("ATHR-003","Your session is expired. Log in again to access this endpoint.");
+        }
+
+        //Set logout time
+        customerAuthTokenEntity.setLogoutAt(ZonedDateTime.now());
+
+        //update customerAuthTokenEntity with updated logout time.
+        authenticationService.updateAuthToken(customerAuthTokenEntity);
+
+        //create response with signed out customer uuid
+        LogoutResponse signoutResponse = new LogoutResponse().id(customerAuthTokenEntity.getCustomer().getUuid()).message("SIGNED OUT SUCCESSFULLY");
+        HttpHeaders headers = new HttpHeaders();
+        return new ResponseEntity<LogoutResponse>(signoutResponse, headers, HttpStatus.OK);
+
     }
 
     @RequestMapping(

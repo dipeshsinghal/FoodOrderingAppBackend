@@ -32,14 +32,14 @@ public class CustomerAuthTokenEntity implements Serializable {
     @NotNull
     private CustomerEntity customer;
 
-    @Column(name = "acces_token")
+    @Column(name = "access_token")
     @Size(max = 500)
-    private String accessToken;
+        private String accessToken;
 
     @Column(name = "login_at")
     private ZonedDateTime loginAt;
 
-    @Column(name = "EXPIRES_AT")
+    @Column(name = "expires_at")
     private ZonedDateTime expiresAt;
 
     @Column(name = "logout_at")
