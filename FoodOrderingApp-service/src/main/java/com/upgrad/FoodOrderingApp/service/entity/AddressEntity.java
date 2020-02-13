@@ -23,7 +23,7 @@ public class AddressEntity implements Serializable {
 
     @Column(name = "flat_buil_number")
     @Size(max = 255)
-    private String flatBuilNumber;
+    private String flatBuildNo;
 
     @Column(name = "locality")
     @Size(max = 255)
@@ -60,12 +60,12 @@ public class AddressEntity implements Serializable {
         this.uuid = uuid;
     }
 
-    public String getFlatBuilNumber() {
-        return flatBuilNumber;
+    public String getFlatBuilNo() {
+        return flatBuildNo;
     }
 
-    public void setFlatBuilNumber(String flatBuilNumber) {
-        this.flatBuilNumber = flatBuilNumber;
+    public void setFlatBuilNo(String flatBuildNo) {
+        this.flatBuildNo = flatBuildNo;
     }
 
     public String getLocality() {
