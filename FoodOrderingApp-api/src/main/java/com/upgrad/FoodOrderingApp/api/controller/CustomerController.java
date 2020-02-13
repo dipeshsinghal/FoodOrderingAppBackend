@@ -166,11 +166,17 @@ public class CustomerController {
         // Call authenticationService with access token came in authorization field.
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        CustomerEntity updateCustomerEntity = customerService.updateCustomerPassword(updatePasswordRequest.getOldPassword(),updatePasswordRequest.getOldPassword(), customerEntity);
+        if(updatePasswordRequest.getOldPassword() == null ||
+            updatePasswordRequest.getOldPassword().isEmpty() ||
+            updatePasswordRequest.getNewPassword() == null ||
+            updatePasswordRequest.getNewPassword().isEmpty()) {
+            throw new UpdateCustomerException("UCR-003", "No field should be empty");
+        }
+        customerService.updateCustomerPassword(updatePasswordRequest.getOldPassword(),updatePasswordRequest.getNewPassword(), customerEntity);
 
         //create response with create customer uuid
-        UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse().id(updateCustomerEntity.getUuid()).status("Service Not Implemented");
+        UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse().id(customerEntity.getUuid()).status("Service Not Implemented");
 
-        return new ResponseEntity<UpdatePasswordResponse>(updatePasswordResponse, HttpStatus.CREATED);
+        return new ResponseEntity<UpdatePasswordResponse>(updatePasswordResponse, HttpStatus.OK);
     }
 }
