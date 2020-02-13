@@ -38,6 +38,16 @@ public class CustomerController {
             @RequestBody final SignupCustomerRequest signupCustomerRequest)
             throws SignUpRestrictedException {
 
+        if (signupCustomerRequest.getFirstName() == null ||
+                signupCustomerRequest.getFirstName().isEmpty() ||
+                signupCustomerRequest.getEmailAddress() == null ||
+                signupCustomerRequest.getEmailAddress().isEmpty() ||
+                signupCustomerRequest.getContactNumber() == null ||
+                signupCustomerRequest.getContactNumber().isEmpty() ||
+                signupCustomerRequest.getPassword() == null ||
+                signupCustomerRequest.getPassword().isEmpty()) {
+            throw new SignUpRestrictedException("SGR-005", "Except last name all fields should be filled.");
+        }
 
         System.out.println(signupCustomerRequest);
         //create a new CustomerEntity Object
