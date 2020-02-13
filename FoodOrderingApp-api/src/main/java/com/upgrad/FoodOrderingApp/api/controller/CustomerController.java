@@ -1,13 +1,18 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.service.businness.AuthenticationService;
+import com.upgrad.FoodOrderingApp.service.businness.JwtTokenProvider;
+import com.upgrad.FoodOrderingApp.service.businness.PasswordCryptographyProvider;
 import com.upgrad.FoodOrderingApp.service.businness.SignupBusinessService;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthTokenEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
 import com.upgrad.FoodOrderingApp.service.exception.UpdateCustomerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +29,12 @@ public class CustomerController {
 
     @Autowired
     private SignupBusinessService signupBusinessService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
+    private PasswordCryptographyProvider passwordCryptographyProvider;
 
     @RequestMapping(
             method = RequestMethod.POST,
@@ -67,7 +78,37 @@ public class CustomerController {
     public ResponseEntity<LoginResponse> login(
             @RequestHeader("authorization") final String authorization)
             throws AuthenticationFailedException {
-        return null;
+
+        //split and extract authorization base 64 code string from "authorization" field
+        String[] base64EncodedString = authorization.split("Basic ");
+
+        //decode base64 string from a "authorization" field
+        if(base64EncodedString.length != 2 ) {
+            throw new AuthenticationFailedException("ATH-003","Incorrect format of decoded customer name and password");
+        }
+        byte[] decodedArray = passwordCryptographyProvider.getBase64DecodedStringAsBytes(base64EncodedString[1]);
+
+        String decodedString = new String(decodedArray);
+
+        //decoded string contain username and password separated by ":"
+        String[] decodedUserNamePassword = decodedString.split(":");
+
+        if ( decodedUserNamePassword.length != 2 ) {
+            throw new AuthenticationFailedException("ATH-003","Incorrect format of decoded customer name and password");
+        }
+
+        //call authenticationService service to generate user Auth Token for any further communication
+        CustomerAuthTokenEntity customerAuthTokenEntity = authenticationService.authenticateByUserNamePassword(decodedUserNamePassword[0], decodedUserNamePassword[1]);
+
+        //get CustomerEntity from Auth Token
+        CustomerEntity customerEntity = customerAuthTokenEntity.getCustomer();
+
+        //send response with user uuid and access token in HttpHeader
+        LoginResponse loginResponse = new LoginResponse().id(customerEntity.getUuid()).message("SIGNED IN SUCCESSFULLY");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("access_token", customerAuthTokenEntity.getAccessToken());
+
+        return new ResponseEntity<LoginResponse>(loginResponse, headers, HttpStatus.OK);
 
     }
 
