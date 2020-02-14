@@ -19,7 +19,6 @@ public class ItemController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/item/restaurant/{restaurant_id}",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ItemListResponse> getItemList(
             @PathVariable("restaurant_id") final UUID restaurantId)

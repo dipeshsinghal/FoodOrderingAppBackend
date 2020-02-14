@@ -40,6 +40,7 @@ public class AddressEntity implements Serializable {
     @Size(max = 30)
     private String pincode;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "State_id")
     private StateEntity state;
 

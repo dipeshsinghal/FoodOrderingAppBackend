@@ -71,7 +71,6 @@ public class AddressController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/address/customer",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AddressListResponse> getAddressList(
             @RequestHeader("authorization") final String authorization)
@@ -121,7 +120,6 @@ public class AddressController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/states",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<StatesListResponse> getStatesList() {
 

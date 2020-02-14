@@ -19,7 +19,6 @@ public class CategoryController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/category",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CategoryListResponse> getGategoryList() {
         return null;
@@ -28,7 +27,6 @@ public class CategoryController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/category/{category_id}",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CategoryDetailsResponse> getCategoryDetails(
             @PathVariable("category_id") final UUID categoryId)

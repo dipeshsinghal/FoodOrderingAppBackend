@@ -19,7 +19,6 @@ public class OrderController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/order/coupon/{coupon_name}",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CustomerOrderResponse> getCustomerOrderCupon(
             @RequestHeader("authorization") final String authorization,
@@ -35,7 +34,6 @@ public class OrderController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/order",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CustomerOrderResponse> getCustomerOrder(
             @RequestHeader("authorization") final String authorization)

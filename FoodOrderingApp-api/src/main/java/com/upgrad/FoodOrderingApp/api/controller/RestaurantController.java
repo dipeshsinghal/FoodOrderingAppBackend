@@ -26,7 +26,6 @@ public class RestaurantController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/restaurant",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantListResponse> getRestaurantList() {
         return null;
@@ -35,7 +34,6 @@ public class RestaurantController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/restaurant/name/{restaurant_name}",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantListResponse> getRestaurantListByName(
             @PathVariable("reastaurant_name") final String reastaurantName)
@@ -47,7 +45,6 @@ public class RestaurantController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/restaurant/category/{category_id}",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantListResponse> getRestaurantListByCategory(final UUID categoryId)
             throws CategoryNotFoundException {
@@ -57,7 +54,6 @@ public class RestaurantController {
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/restaurant/{restaurant_id}",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantDetailsResponse> getRestaurantDetails(
             @PathVariable("restaurant_id") final UUID restaurantId)

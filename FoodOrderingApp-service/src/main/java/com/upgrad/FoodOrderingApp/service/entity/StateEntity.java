@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "state", schema = "public")
@@ -29,6 +31,9 @@ public class StateEntity implements Serializable {
     @Column(name = "state_name")
     @Size(max = 255)
     private String stateName;
+
+    @OneToMany(mappedBy = "state", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<AddressEntity> address = new ArrayList<>();
 
     public StateEntity(@Size(max = 200) @NotNull String uuid, @Size(max = 255) String stateName) {
         this.uuid = uuid;
