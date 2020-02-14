@@ -1,5 +1,6 @@
 package com.upgrad.FoodOrderingApp.service.entity;
 
+import com.upgrad.FoodOrderingApp.service.common.ItemType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -34,7 +35,8 @@ public class ItemEntity implements Serializable {
     @Column(name = "type")
     @NotNull
     @Size(max = 10)
-    private String type;
+    @Enumerated(EnumType.ORDINAL)
+    private ItemType type;
 
     public long getId() {
         return id;
@@ -68,11 +70,11 @@ public class ItemEntity implements Serializable {
         this.price = price;
     }
 
-    public String getType() {
+    public ItemType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ItemType type) {
         this.type = type;
     }
 
