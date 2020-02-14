@@ -27,6 +27,10 @@ public class OrderEntity implements Serializable {
     @NotNull
     private Double bill;
 
+    @Column(name = "discount")
+    @NotNull
+    private Double discount=0.0;
+
     @JoinColumn(name = "coupon_id")
     private CouponEntity coupon;
 
@@ -51,11 +55,12 @@ public class OrderEntity implements Serializable {
 
     public OrderEntity(){}
 
-    public OrderEntity(@Size(max = 200) String uuid, @NotNull Double bill, CouponEntity coupon, Double d, @NotNull Date timestamp, PaymentEntity payment, @NotNull CustomerEntity customer, @NotNull AddressEntity address, @NotNull RestaurantEntity restaurant) {
+    public OrderEntity(@Size(max = 200) String uuid, @NotNull Double bill, CouponEntity coupon, Double discount, @NotNull Date timestamp, PaymentEntity payment, @NotNull CustomerEntity customer, @NotNull AddressEntity address, @NotNull RestaurantEntity restaurant) {
         this.id = 0;
         this.uuid = uuid;
         this.bill = bill;
         this.coupon = coupon;
+        this.discount = discount;
         this.timestamp = timestamp;
         this.payment = payment;
         this.customer = customer;
@@ -101,6 +106,14 @@ public class OrderEntity implements Serializable {
 
     public void setCoupon(CouponEntity coupon) {
         this.coupon = coupon;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 
     public PaymentEntity getPayment() {
