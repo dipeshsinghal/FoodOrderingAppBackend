@@ -23,4 +23,9 @@ public class AddressDao {
         }
     }
 
+    public AddressEntity saveAddress(AddressEntity addressEntity){
+        entityManager.persist(addressEntity);
+        return addressEntity;
+    }
+
 }

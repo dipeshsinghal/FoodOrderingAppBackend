@@ -41,28 +41,11 @@ public class AddressController {
             @RequestBody final SaveAddressRequest saveAddressRequest)
             throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
 
-        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
-        if ( saveAddressRequest.getFlatBuildingName() == null ||
-                saveAddressRequest.getFlatBuildingName().isEmpty() ||
-                saveAddressRequest.getLocality() == null ||
-                saveAddressRequest.getLocality().isEmpty() ||
-                saveAddressRequest.getCity() == null ||
-                saveAddressRequest.getCity().isEmpty() ||
-                saveAddressRequest.getPincode() == null ||
-                saveAddressRequest.getPincode().isEmpty() ||
-                saveAddressRequest.getStateUuid() == null ||
-                saveAddressRequest.getStateUuid().isEmpty() ) {
-            throw new SaveAddressException("SAR-001", "No field can be empty.");
-        }
+        System.out.println(authorization);
 
-        if (!saveAddressRequest.getPincode().matches("[0-9]{6,6}")) {
-            throw new SaveAddressException("SAR-002", "Invalid pincode.");
-        }
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         StateEntity stateEntity = addressService.getStateByUUID(saveAddressRequest.getStateUuid());
-        if (stateEntity == null ) {
-            throw new AddressNotFoundException("ANF-002", "No state by this id.");
-        }
 
         AddressEntity addressEntity = new AddressEntity();
 
