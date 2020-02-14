@@ -15,4 +15,9 @@ public class ItemService {
     public List<ItemEntity> getItemsByPopularity(RestaurantEntity restaurantEntity) {
         return null;
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<ItemEntity> getItemsByCategoryAndRestaurant(String restaurantId, String categoryId) {
+        return null;
+    }
 }

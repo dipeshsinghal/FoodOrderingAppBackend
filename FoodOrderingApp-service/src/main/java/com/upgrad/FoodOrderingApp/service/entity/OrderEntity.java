@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "orders", schema = "public")
-public class OrdersEntity implements Serializable {
+public class OrderEntity implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class OrdersEntity implements Serializable {
 
     @Column(name = "bill")
     @NotNull
-    private BigDecimal bill;
+    private Double bill;
 
     @JoinColumn(name = "coupon_id")
     private CouponEntity coupon;
@@ -49,6 +49,20 @@ public class OrdersEntity implements Serializable {
     @NotNull
     private RestaurantEntity restaurant;
 
+    public OrderEntity(){}
+
+    public OrderEntity(@Size(max = 200) String uuid, @NotNull Double bill, CouponEntity coupon, Double d, @NotNull Date timestamp, PaymentEntity payment, @NotNull CustomerEntity customer, @NotNull AddressEntity address, @NotNull RestaurantEntity restaurant) {
+        this.id = 0;
+        this.uuid = uuid;
+        this.bill = bill;
+        this.coupon = coupon;
+        this.timestamp = timestamp;
+        this.payment = payment;
+        this.customer = customer;
+        this.address = address;
+        this.restaurant = restaurant;
+    }
+
     public long getId() {
         return id;
     }
@@ -65,11 +79,11 @@ public class OrdersEntity implements Serializable {
         this.uuid = uuid;
     }
 
-    public BigDecimal getBill() {
+    public Double getBill() {
         return bill;
     }
 
-    public void setBill(BigDecimal bill) {
+    public void setBill(Double bill) {
         this.bill = bill;
     }
 

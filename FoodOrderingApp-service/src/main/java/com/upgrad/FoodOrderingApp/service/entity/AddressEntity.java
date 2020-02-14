@@ -11,6 +11,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "address", schema = "public")
+@NamedQueries({
+       //@NamedQuery(name = "getAllAddressOfCustomer", query = "select a from AddressEntity a where a.customer_id =:customer_id")
+})
 public class AddressEntity implements Serializable {
     @Id
     @Column(name = "id")
@@ -33,7 +36,6 @@ public class AddressEntity implements Serializable {
     @Size(max = 39)
     private String city;
 
-
     @Column(name = "pincode", unique = true)
     @Size(max = 30)
     private String pincode;
@@ -43,6 +45,19 @@ public class AddressEntity implements Serializable {
 
     @Column(name = "active")
     private Integer active = 1;
+
+    public AddressEntity(){}
+
+    public AddressEntity(@Size(max = 200) String uuid, @Size(max = 255) String flatBuildNo, @Size(max = 255) String locality, @Size(max = 39) String city, @Size(max = 30) String pincode, StateEntity state) {
+        this.id = 0;
+        this.uuid = uuid;
+        this.flatBuildNo = flatBuildNo;
+        this.locality = locality;
+        this.city = city;
+        this.pincode = pincode;
+        this.state = state;
+        this.active = 1;
+    }
 
     public long getId() {
         return id;

@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "category", schema = "public")
@@ -26,6 +27,9 @@ public class CategoryEntity implements Serializable {
     @NotNull
     @Size(max = 255)
     private String categoryName;
+
+    @Transient
+    private List<ItemEntity> items;
 
     public long getId() {
         return id;
@@ -49,6 +53,14 @@ public class CategoryEntity implements Serializable {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public List<ItemEntity> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemEntity> items) {
+        this.items = items;
     }
 
     @Override

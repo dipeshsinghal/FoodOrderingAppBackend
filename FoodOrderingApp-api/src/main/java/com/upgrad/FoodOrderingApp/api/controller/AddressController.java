@@ -3,6 +3,7 @@ package com.upgrad.FoodOrderingApp.api.controller;
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.AddressService;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
+import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
@@ -78,7 +79,28 @@ public class AddressController {
 
         CustomerEntity customerEntity = customerService.getCustomer(authorization);
 
-        return null;
+        List<AddressEntity> listAddressEntity = addressService.getAllAddress(customerEntity);
+
+        List<AddressList> listAddressList = null;
+        if(listAddressEntity.size() != 0 ) {
+            listAddressList = new ArrayList<AddressList>();
+            for (AddressEntity addressEntity: listAddressEntity) {
+                AddressListState addressListState = new AddressListState()
+                        .id(UUID.fromString(addressEntity.getState().getUuid()))
+                        .stateName(addressEntity.getState().getStateName());
+                listAddressList.add(new AddressList()
+                        .id(UUID.fromString(addressEntity.getUuid()))
+                        .flatBuildingName(addressEntity.getFlatBuilNo())
+                        .locality(addressEntity.getLocality())
+                        .city(addressEntity.getCity())
+                        .pincode(addressEntity.getPincode())
+                        .state(addressListState));
+            }
+        }
+
+        AddressListResponse addressListResponse = new AddressListResponse().addresses(listAddressList);
+
+        return new ResponseEntity<AddressListResponse>(addressListResponse, HttpStatus.OK);
     }
 
     @RequestMapping(

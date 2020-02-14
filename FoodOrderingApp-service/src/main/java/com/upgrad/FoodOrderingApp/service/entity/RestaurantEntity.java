@@ -33,20 +33,21 @@ public class RestaurantEntity implements Serializable {
 
     @Column(name = "customer_rating")
     @NotNull
-    private BigDecimal customerRating;
-
+    private Double customerRating;
 
     @Column(name = "average_price_for_two")
     @NotNull
-    private InternalError averagePriceForTwo;
+    private Integer avgPrice;
 
     @Column(name = "number_of_customers_rated")
     @NotNull
-    private Integer numberOfCustomersRated = 0;
+    private Integer numberCustomersRated = 0;
 
     @JoinColumn(name = "address_id")
     @NotNull
     private AddressEntity address;
+
+    public RestaurantEntity(){}
 
     public long getId() {
         return id;
@@ -80,28 +81,28 @@ public class RestaurantEntity implements Serializable {
         this.photoUrl = photoUrl;
     }
 
-    public BigDecimal getCustomerRating() {
+    public Double getCustomerRating() {
         return customerRating;
     }
 
-    public void setCustomerRating(BigDecimal customerRating) {
+    public void setCustomerRating(Double customerRating) {
         this.customerRating = customerRating;
     }
 
-    public InternalError getAveragePriceForTwo() {
-        return averagePriceForTwo;
+    public Integer getAvgPrice() {
+        return avgPrice;
     }
 
-    public void setAveragePriceForTwo(InternalError averagePriceForTwo) {
-        this.averagePriceForTwo = averagePriceForTwo;
+    public void setAvgPrice(Integer avgPrice) {
+        this.avgPrice = avgPrice;
     }
 
-    public Integer getNumberOfCustomersRated() {
-        return numberOfCustomersRated;
+    public Integer getNumberCustomersRated() {
+        return numberCustomersRated;
     }
 
-    public void setNumberOfCustomersRated(Integer numberOfCustomersRated) {
-        this.numberOfCustomersRated = numberOfCustomersRated;
+    public void setNumberCustomersRated(Integer numberCustomersRated) {
+        this.numberCustomersRated = numberCustomersRated;
     }
 
     public AddressEntity getAddress() {

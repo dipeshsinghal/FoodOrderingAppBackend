@@ -1,39 +1,44 @@
 package com.upgrad.FoodOrderingApp.service.businness;
 
-import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
+import com.upgrad.FoodOrderingApp.service.dao.PaymentDao;
+import com.upgrad.FoodOrderingApp.service.entity.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class RestaurantService {
+public class OrderService {
+
+//    @Autowired
+//    private OrderDao orderDao;
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public RestaurantEntity restaurantByUUID(String uuid) {
+    public CouponEntity getCouponByCouponId(String couponId) {
         return null;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<RestaurantEntity> restaurantsByName(String restaurantName) {
+    public CouponEntity getCouponByCouponName(String couponId) {
         return null;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<RestaurantEntity> restaurantByCategory(String categoryId) {
+    public OrderEntity saveOrder(OrderEntity orderEntity) {
         return null;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<RestaurantEntity> restaurantsByRating() {
+    public OrderItemEntity saveOrderItem(OrderItemEntity orderItemEntity) {
         return null;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public RestaurantEntity updateRestaurantRating(RestaurantEntity restaurantEntity, Double rating) {
+    public List<OrderEntity> getOrdersByCustomers(String customerId) {
         return null;
     }
+
 
 }

@@ -29,6 +29,13 @@ public class PaymentEntity implements Serializable {
     @Size(max = 255)
     private String paymentName;
 
+    public PaymentEntity() {}
+
+    public PaymentEntity(@Size(max = 200) @NotNull String uuid, @Size(max = 255) String paymentName) {
+        this.uuid = uuid;
+        this.paymentName = paymentName;
+    }
+
     public long getId() {
         return id;
     }

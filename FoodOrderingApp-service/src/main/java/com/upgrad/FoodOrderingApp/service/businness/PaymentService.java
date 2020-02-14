@@ -21,4 +21,10 @@ public class PaymentService {
         return paymentDao.getAllPayment();
     }
 
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public PaymentEntity getPaymentByUUID(String uuid) {
+        return paymentDao.getPaymentByUUID(uuid);
+    }
+
 }

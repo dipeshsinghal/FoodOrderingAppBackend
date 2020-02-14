@@ -31,6 +31,20 @@ public class CouponEntity implements Serializable {
     @NotNull
     private Integer percent;
 
+    public CouponEntity(@Size(max = 200) @NotNull String uuid, @NotNull @Size(max = 255) String couponName, @NotNull Integer percent) {
+        this.id = 0;
+        this.uuid = uuid;
+        this.couponName = couponName;
+        this.percent = percent;
+    }
+
+    public CouponEntity() {
+        this.id = 0;
+        this.uuid = "";
+        this.couponName = "";
+        this.percent = 0;
+    }
+
     public long getId() {
         return id;
     }
