@@ -23,7 +23,7 @@ public class AddressService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public AddressEntity saveAddress(AddressEntity addressEntity, CustomerEntity customerEntity) {
-        return null;
+        return addressEntity;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

@@ -1,5 +1,6 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
+import com.upgrad.FoodOrderingApp.api.common.Utility;
 import com.upgrad.FoodOrderingApp.api.model.*;
 
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
@@ -73,7 +74,7 @@ public class RestaurantController {
             throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
         // Call authenticationService with access token came in authorization field.
-        CustomerEntity customerEntity = customerService.getCustomer(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         return null;
     }

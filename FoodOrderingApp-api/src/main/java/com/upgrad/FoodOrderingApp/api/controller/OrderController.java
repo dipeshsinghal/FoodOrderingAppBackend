@@ -1,5 +1,6 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
+import com.upgrad.FoodOrderingApp.api.common.Utility;
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
@@ -26,7 +27,7 @@ public class OrderController {
             throws AuthorizationFailedException, CouponNotFoundException {
 
         // Call authenticationService with access token came in authorization field.
-        CustomerEntity customerEntity = customerService.getCustomer(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         return null;
     }
@@ -40,7 +41,7 @@ public class OrderController {
             throws AuthorizationFailedException {
 
         // Call authenticationService with access token came in authorization field.
-        CustomerEntity customerEntity = customerService.getCustomer(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         return null;
     }
@@ -58,7 +59,7 @@ public class OrderController {
             RestaurantNotFoundException, ItemNotFoundException {
 
         // Call authenticationService with access token came in authorization field.
-        CustomerEntity customerEntity = customerService.getCustomer(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         return null;
     }

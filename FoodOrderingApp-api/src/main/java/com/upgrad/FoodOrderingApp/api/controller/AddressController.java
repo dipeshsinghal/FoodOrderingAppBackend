@@ -1,5 +1,6 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
+import com.upgrad.FoodOrderingApp.api.common.Utility;
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.AddressService;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
@@ -40,7 +41,7 @@ public class AddressController {
             @RequestBody final SaveAddressRequest saveAddressRequest)
             throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
 
-        CustomerEntity customerEntity = customerService.getCustomer(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
         if ( saveAddressRequest.getFlatBuildingName() == null ||
                 saveAddressRequest.getFlatBuildingName().isEmpty() ||
                 saveAddressRequest.getLocality() == null ||
@@ -63,9 +64,17 @@ public class AddressController {
             throw new AddressNotFoundException("ANF-002", "No state by this id.");
         }
 
-        SaveAddressResponse saveAddressResponse = new SaveAddressResponse().id(customerEntity.getUuid()).status("ADDRESS SUCCESSFULLY REGISTERED");
+        AddressEntity addressEntity = new AddressEntity();
 
-        return new ResponseEntity<SaveAddressResponse>(saveAddressResponse, HttpStatus.OK);
+        //create a new random unique uuid and set it to new Address Entity
+        addressEntity.setUuid(UUID.randomUUID().toString());
+
+        //Call AddressService to create a new AddressEntity
+        AddressEntity createdAddressEntity =  addressService.saveAddress(addressEntity, customerEntity);
+
+        SaveAddressResponse saveAddressResponse = new SaveAddressResponse().id(createdAddressEntity.getUuid()).status("ADDRESS SUCCESSFULLY REGISTERED");
+
+        return new ResponseEntity<SaveAddressResponse>(saveAddressResponse, HttpStatus.CREATED);
     }
 
     @RequestMapping(
@@ -76,7 +85,7 @@ public class AddressController {
             @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
 
-        CustomerEntity customerEntity = customerService.getCustomer(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         List<AddressEntity> listAddressEntity = addressService.getAllAddress(customerEntity);
 
@@ -112,7 +121,7 @@ public class AddressController {
             @PathVariable("address_id") final UUID addressId)
             throws AuthorizationFailedException, AddressNotFoundException {
 
-        CustomerEntity customerEntity = customerService.getCustomer(authorization);
+        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         return null;
     }
