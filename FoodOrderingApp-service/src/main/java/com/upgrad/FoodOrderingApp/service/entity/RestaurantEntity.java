@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "restaurant", schema = "public")
@@ -43,6 +45,8 @@ public class RestaurantEntity implements Serializable {
     @NotNull
     private Integer numberCustomersRated = 0;
 
+
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     @NotNull
     private AddressEntity address;
