@@ -1,16 +1,21 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.service.businness.AddressService;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
+import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SaveAddressException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,6 +24,10 @@ public class AddressController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private AddressService addressService;
+
 
     @RequestMapping(
             method = RequestMethod.POST,
@@ -31,8 +40,31 @@ public class AddressController {
             throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
 
         CustomerEntity customerEntity = customerService.getCustomer(authorization);
+        if ( saveAddressRequest.getFlatBuildingName() == null ||
+                saveAddressRequest.getFlatBuildingName().isEmpty() ||
+                saveAddressRequest.getLocality() == null ||
+                saveAddressRequest.getLocality().isEmpty() ||
+                saveAddressRequest.getCity() == null ||
+                saveAddressRequest.getCity().isEmpty() ||
+                saveAddressRequest.getPincode() == null ||
+                saveAddressRequest.getPincode().isEmpty() ||
+                saveAddressRequest.getStateUuid() == null ||
+                saveAddressRequest.getStateUuid().isEmpty() ) {
+            throw new SaveAddressException("SAR-001", "No field can be empty.");
+        }
 
-        return null;
+        if (!saveAddressRequest.getPincode().matches("[0-9]{6,6}")) {
+            throw new SaveAddressException("SAR-002", "Invalid pincode.");
+        }
+
+        StateEntity stateEntity = addressService.getStateByUUID(saveAddressRequest.getStateUuid());
+        if (stateEntity == null ) {
+            throw new AddressNotFoundException("ANF-002", "No state by this id.");
+        }
+
+        SaveAddressResponse saveAddressResponse = new SaveAddressResponse().id(customerEntity.getUuid()).status("ADDRESS SUCCESSFULLY REGISTERED");
+
+        return new ResponseEntity<SaveAddressResponse>(saveAddressResponse, HttpStatus.OK);
     }
 
     @RequestMapping(
@@ -70,7 +102,18 @@ public class AddressController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<StatesListResponse> getStatesList() {
-        return null;
+
+        List<StateEntity> listStateEntity = addressService.getAllStates();
+
+        List<StatesList> listStatesList = new ArrayList<StatesList>();
+        for (StateEntity stateEntity: listStateEntity) {
+            listStatesList.add(new StatesList().id(UUID.fromString(stateEntity.getUuid())).stateName(stateEntity.getStateName()));
+        }
+        if(listStatesList.size() == 0 ) {
+            listStatesList = null;
+        }
+        StatesListResponse statesListResponse = new StatesListResponse().states(listStatesList);
+        return new ResponseEntity<StatesListResponse>(statesListResponse, HttpStatus.OK);
     }
 }
 

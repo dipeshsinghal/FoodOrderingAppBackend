@@ -11,6 +11,10 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "state", schema = "public")
+@NamedQueries({
+        @NamedQuery(name = "getAllState", query = "select s from StateEntity s"),
+        @NamedQuery(name = "getStateByUuid", query = "select s from StateEntity s where s.uuid =:uuid")
+})
 public class StateEntity implements Serializable {
     @Id
     @Column(name = "id")
