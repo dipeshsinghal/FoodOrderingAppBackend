@@ -31,22 +31,18 @@ public class AddressService {
         return null;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) {
         return null;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public List<AddressEntity> getAllAddress(CustomerEntity customerEntity) {
         return null;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public List<StateEntity> getAllStates() {
         return stateDao.getAllState();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public StateEntity getStateByUUID(String uuid) {
         return stateDao.getStateByUuid(uuid);
     }

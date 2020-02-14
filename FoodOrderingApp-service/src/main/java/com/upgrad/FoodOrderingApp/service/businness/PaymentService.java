@@ -16,13 +16,10 @@ public class PaymentService {
     @Autowired
     private PaymentDao paymentDao;
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public List<PaymentEntity> getAllPaymentMethods() {
         return paymentDao.getAllPayment();
     }
 
-
-    @Transactional(propagation = Propagation.REQUIRED)
     public PaymentEntity getPaymentByUUID(String uuid) {
         return paymentDao.getPaymentByUUID(uuid);
     }

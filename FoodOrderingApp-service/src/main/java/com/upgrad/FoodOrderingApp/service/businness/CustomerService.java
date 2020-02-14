@@ -94,7 +94,6 @@ public class CustomerService {
         return false;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public CustomerAuthEntity authenticate(String contactNumber, String password) throws AuthenticationFailedException {
 
         if (contactNumber == null ||
@@ -131,7 +130,6 @@ public class CustomerService {
         return customerAuthEntity;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity getCustomer(final String accessToken) throws AuthorizationFailedException {
         CustomerAuthEntity customerAuthEntity = customerAuthDao.getAuthTokenEntityByAccessToken(accessToken);
         if (customerAuthEntity != null) {

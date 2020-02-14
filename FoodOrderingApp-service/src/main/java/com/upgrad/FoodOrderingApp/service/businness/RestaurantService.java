@@ -11,22 +11,18 @@ import java.util.List;
 @Service
 public class RestaurantService {
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public RestaurantEntity restaurantByUUID(String uuid) {
         return null;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public List<RestaurantEntity> restaurantsByName(String restaurantName) {
         return null;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public List<RestaurantEntity> restaurantByCategory(String categoryId) {
         return null;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public List<RestaurantEntity> restaurantsByRating() {
         return null;
     }

@@ -15,12 +15,10 @@ public class OrderService {
 //    @Autowired
 //    private OrderDao orderDao;
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public CouponEntity getCouponByCouponId(String couponId) {
         return null;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public CouponEntity getCouponByCouponName(String couponId) {
         return null;
     }
@@ -35,7 +33,6 @@ public class OrderService {
         return null;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public List<OrderEntity> getOrdersByCustomers(String customerId) {
         return null;
     }

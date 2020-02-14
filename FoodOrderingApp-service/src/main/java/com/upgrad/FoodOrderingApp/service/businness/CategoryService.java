@@ -11,19 +11,14 @@ import java.util.List;
 @Service
 public class CategoryService {
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public List<CategoryEntity> getCategoriesByRestaurant(String restaurantId) {
         return null;
     }
 
-
-    @Transactional(propagation = Propagation.REQUIRED)
     public CategoryEntity getCategoryById(String categoryId) {
         return null;
     }
 
-
-    @Transactional(propagation = Propagation.REQUIRED)
     public List<CategoryEntity> getAllCategoriesOrderedByName() {
         return null;
     }
