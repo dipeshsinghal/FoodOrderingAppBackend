@@ -5,15 +5,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
-import javax.swing.plaf.nimbus.State;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "address", schema = "public")
 @NamedQueries({
        //@NamedQuery(name = "getAllAddressOfCustomer", query = "select a from AddressEntity a where a.customer_id =:customer_id")
-        @NamedQuery(name = "getAddressByUUID", query = "select a from AddressEntity a, CustomerEntity c where a.uuid =:addressUuid and c.uuid =:customerUuid")
+        //@NamedQuery(name = "getAddressByUUID", query = "select a from AddressEntity a, CustomerEntity c where a.uuid =:addressUuid and c.uuid =:customerUuid")
 })
 public class AddressEntity implements Serializable {
     @Id
@@ -47,6 +48,9 @@ public class AddressEntity implements Serializable {
 
     @Column(name = "active")
     private Integer active = 1;
+
+    @OneToMany(mappedBy = "address", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<CustomerAddressEntity> customerAddress = new ArrayList<>();
 
     public AddressEntity(){}
 

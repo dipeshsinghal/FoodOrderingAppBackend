@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -53,6 +55,9 @@ public class CustomerEntity implements Serializable {
     @NotNull
     @Size(max = 255)
     private String salt;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<CustomerAddressEntity> customerAddress = new ArrayList<>();
 
     public long getId() {
         return id;

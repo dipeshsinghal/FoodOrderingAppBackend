@@ -3,6 +3,7 @@ package com.upgrad.FoodOrderingApp.service.businness;
 import com.upgrad.FoodOrderingApp.service.dao.AddressDao;
 import com.upgrad.FoodOrderingApp.service.dao.StateDao;
 import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
@@ -53,12 +54,15 @@ public class AddressService {
         return null;
     }
 
-    public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) throws AuthorizationFailedException{
-        try {
-            return addressDao.getAddressByUUID(uuid, customerEntity.getUuid());
-        } catch (Exception e) {
-            throw new AuthorizationFailedException("ATHR-004","You are not authorized to view/update/delete any one else's address");
-        }
+    public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) throws AuthorizationFailedException, AddressNotFoundException{
+            CustomerAddressEntity customerAddressEntity = addressDao.getAddressByUUID(uuid, customerEntity.getUuid());
+            if(customerAddressEntity == null ) {
+                throw new AddressNotFoundException("ANF-003","No address by this id");
+            } else if ( customerAddressEntity.getCustomer() != customerEntity ) {
+                throw new AuthorizationFailedException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
+            } else {
+                return customerAddressEntity.getAddress();
+            }
     }
 
     public List<AddressEntity> getAllAddress(CustomerEntity customerEntity) {
