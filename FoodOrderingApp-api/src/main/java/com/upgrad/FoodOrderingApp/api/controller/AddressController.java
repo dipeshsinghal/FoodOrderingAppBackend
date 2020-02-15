@@ -104,7 +104,7 @@ public class AddressController {
 
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        //Call AddressService to create a new AddressEntity
+        //Call AddressService to search AddressEntity
         AddressEntity addressEntity =  addressService.getAddressByUUID(addressId, customerEntity);
 
         AddressEntity deletedAddressEntity = addressService.deleteAddress(addressEntity);

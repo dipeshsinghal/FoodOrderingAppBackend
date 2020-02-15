@@ -22,9 +22,9 @@ public class AddressDao {
         }
     }
 
-    public AddressEntity getAddressByUUID(String uuid){
+    public AddressEntity getAddressByUUID(String addressUuid, String customerUuid){
         try {
-            return entityManager.createNamedQuery("getAddressByUUID", AddressEntity.class).setParameter("uuid",uuid).getSingleResult();
+            return entityManager.createNamedQuery("getAddressByUUID", AddressEntity.class).setParameter("addressUuid",addressUuid).setParameter("customerUuid",customerUuid).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }

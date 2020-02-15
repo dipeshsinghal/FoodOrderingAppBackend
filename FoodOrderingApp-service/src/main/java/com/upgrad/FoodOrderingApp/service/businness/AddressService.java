@@ -6,6 +6,7 @@ import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
+import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SaveAddressException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +53,11 @@ public class AddressService {
         return null;
     }
 
-    public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) throws AddressNotFoundException {
+    public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) throws AuthorizationFailedException{
         try {
-            return addressDao.getAddressByUUID(uuid);
+            return addressDao.getAddressByUUID(uuid, customerEntity.getUuid());
         } catch (Exception e) {
-            throw new AddressNotFoundException("ANF-003", "No address by this id");
+            throw new AuthorizationFailedException("ATHR-004","You are not authorized to view/update/delete any one else's address");
         }
     }
 
