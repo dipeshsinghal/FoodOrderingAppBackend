@@ -52,8 +52,12 @@ public class AddressService {
         return null;
     }
 
-    public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) {
-        return null;
+    public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) throws AddressNotFoundException {
+        try {
+            return addressDao.getAddressByUUID(uuid);
+        } catch (Exception e) {
+            throw new AddressNotFoundException("ANF-003", "No address by this id");
+        }
     }
 
     public List<AddressEntity> getAllAddress(CustomerEntity customerEntity) {

@@ -41,8 +41,6 @@ public class AddressController {
             @RequestBody final SaveAddressRequest saveAddressRequest)
             throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
 
-        System.out.println(authorization);
-
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         StateEntity stateEntity = addressService.getStateByUUID(saveAddressRequest.getStateUuid());
@@ -101,12 +99,19 @@ public class AddressController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<DeleteAddressResponse> deleteAddress(
             @RequestHeader("authorization") final String authorization,
-            @PathVariable("address_id") final UUID addressId)
+            @PathVariable("address_id") final String addressId)
             throws AuthorizationFailedException, AddressNotFoundException {
 
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        return null;
+        //Call AddressService to create a new AddressEntity
+        AddressEntity addressEntity =  addressService.getAddressByUUID(addressId, customerEntity);
+
+        AddressEntity deletedAddressEntity = addressService.deleteAddress(addressEntity);
+
+        DeleteAddressResponse deleteAddressResponse = new DeleteAddressResponse().id(UUID.fromString(deletedAddressEntity.getUuid())).status("ADDRESS DELETED SUCCESSFULLY");
+
+        return  new ResponseEntity<DeleteAddressResponse>(deleteAddressResponse, HttpStatus.OK);
     }
 
     @RequestMapping(
