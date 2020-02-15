@@ -51,6 +51,12 @@ public class RestaurantEntity implements Serializable {
     @NotNull
     private AddressEntity address;
 
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<RestaurantItemEntity> restaurantItem = new ArrayList<>();
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<RestaurantCategoryEntity> restaurantCategory = new ArrayList<>();
+
     public RestaurantEntity(){}
 
     public long getId() {

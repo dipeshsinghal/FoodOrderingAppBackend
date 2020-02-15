@@ -9,6 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "item", schema = "public")
@@ -37,6 +39,12 @@ public class ItemEntity implements Serializable {
     @Size(max = 10)
     @Enumerated(EnumType.ORDINAL)
     private ItemType type;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<CategoryItemEntity> categoryItem = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<RestaurantItemEntity> restaurantItem = new ArrayList<>();
 
     public long getId() {
         return id;
