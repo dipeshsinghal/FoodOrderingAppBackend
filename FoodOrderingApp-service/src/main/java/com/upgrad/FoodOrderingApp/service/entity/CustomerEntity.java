@@ -59,6 +59,9 @@ public class CustomerEntity implements Serializable {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<CustomerAddressEntity> customerAddress = new ArrayList<>();
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<OrderEntity> order = new ArrayList<>();
+
     public long getId() {
         return id;
     }

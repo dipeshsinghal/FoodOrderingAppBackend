@@ -46,6 +46,9 @@ public class ItemEntity implements Serializable {
     @OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<RestaurantItemEntity> restaurantItem = new ArrayList<>();
 
+    @OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<OrderItemEntity> orderItem = new ArrayList<>();
+
     public long getId() {
         return id;
     }

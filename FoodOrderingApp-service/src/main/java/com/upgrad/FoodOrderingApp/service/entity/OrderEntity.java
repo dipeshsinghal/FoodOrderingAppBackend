@@ -9,7 +9,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders", schema = "public")
@@ -52,6 +54,9 @@ public class OrderEntity implements Serializable {
     @JoinColumn(name = "restaurant_id")
     @NotNull
     private RestaurantEntity restaurant;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<OrderItemEntity> orderItem = new ArrayList<>();
 
     public OrderEntity(){}
 

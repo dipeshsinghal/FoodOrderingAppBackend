@@ -49,8 +49,14 @@ public class AddressEntity implements Serializable {
     @Column(name = "active")
     private Integer active = 1;
 
+    @OneToOne(mappedBy = "address", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private RestaurantEntity restaurant;
+
     @OneToMany(mappedBy = "address", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<CustomerAddressEntity> customerAddress = new ArrayList<>();
+
+    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
+    private List<OrderEntity> order = new ArrayList<>();
 
     public AddressEntity(){}
 

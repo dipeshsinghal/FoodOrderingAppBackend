@@ -45,8 +45,7 @@ public class RestaurantEntity implements Serializable {
     @NotNull
     private Integer numberCustomersRated = 0;
 
-
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     @NotNull
     private AddressEntity address;
@@ -56,6 +55,9 @@ public class RestaurantEntity implements Serializable {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<RestaurantCategoryEntity> restaurantCategory = new ArrayList<>();
+
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    private List<OrderEntity> order = new ArrayList<>();
 
     public RestaurantEntity(){}
 

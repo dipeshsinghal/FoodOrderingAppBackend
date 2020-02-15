@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "payment", schema = "public")
@@ -28,6 +30,9 @@ public class PaymentEntity implements Serializable {
     @Column(name = "payment_name")
     @Size(max = 255)
     private String paymentName;
+
+    @OneToMany(mappedBy = "payment", fetch = FetchType.LAZY)
+    private List<OrderEntity> order = new ArrayList<>();
 
     public PaymentEntity() {}
 

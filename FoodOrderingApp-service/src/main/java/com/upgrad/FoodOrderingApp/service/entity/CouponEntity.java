@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "coupon", schema = "public")
@@ -30,6 +32,9 @@ public class CouponEntity implements Serializable {
     @Column(name = "percent")
     @NotNull
     private Integer percent;
+
+    @OneToMany(mappedBy = "coupon", fetch = FetchType.LAZY)
+    private List<OrderEntity> order = new ArrayList<>();
 
     public CouponEntity(@Size(max = 200) @NotNull String uuid, @NotNull @Size(max = 255) String couponName, @NotNull Integer percent) {
         this.id = 0;

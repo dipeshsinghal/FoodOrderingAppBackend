@@ -16,10 +16,12 @@ public class OrderItemEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "order_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
     @NotNull
     private OrderEntity order;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id")
     @NotNull
     private ItemEntity item;
