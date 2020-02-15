@@ -14,6 +14,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "restaurant", schema = "public")
+@NamedQueries({
+        @NamedQuery(name = "getRestaurantByUUID", query = "select r from RestaurantEntity r where r.uuid =:uuid")
+})
 public class RestaurantEntity implements Serializable {
     @Id
     @Column(name = "id")
@@ -123,6 +126,30 @@ public class RestaurantEntity implements Serializable {
 
     public void setAddress(AddressEntity address) {
         this.address = address;
+    }
+
+    public List<RestaurantItemEntity> getRestaurantItem() {
+        return restaurantItem;
+    }
+
+    public void setRestaurantItem(List<RestaurantItemEntity> restaurantItem) {
+        this.restaurantItem = restaurantItem;
+    }
+
+    public List<RestaurantCategoryEntity> getRestaurantCategory() {
+        return restaurantCategory;
+    }
+
+    public void setRestaurantCategory(List<RestaurantCategoryEntity> restaurantCategory) {
+        this.restaurantCategory = restaurantCategory;
+    }
+
+    public List<OrderEntity> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<OrderEntity> order) {
+        this.order = order;
     }
 
     @Override
