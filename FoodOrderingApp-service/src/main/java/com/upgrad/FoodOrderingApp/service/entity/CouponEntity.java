@@ -13,6 +13,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "coupon", schema = "public")
+@NamedQueries({
+        @NamedQuery(name = "getCouponByCouponUuid", query = "select c from CouponEntity c where c.uuid =:uuid"),
+        @NamedQuery(name = "getCouponByCouponName", query = "select c from CouponEntity c where c.couponName =:couponName")
+})
 public class CouponEntity implements Serializable {
     @Id
     @Column(name = "id")
