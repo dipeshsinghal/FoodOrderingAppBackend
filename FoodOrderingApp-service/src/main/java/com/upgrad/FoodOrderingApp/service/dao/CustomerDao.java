@@ -16,7 +16,11 @@ public class CustomerDao {
     private EntityManager entityManager;
 
     public CustomerEntity createCustomer(CustomerEntity customerEntity){
-        entityManager.persist(customerEntity);
+        try {
+            entityManager.persist(customerEntity);
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+        }
         return customerEntity;
     }
 
@@ -25,11 +29,18 @@ public class CustomerDao {
             return entityManager.createNamedQuery("customerByContactNumber", CustomerEntity.class).setParameter("contactNumber", contactNumber).getSingleResult();
         } catch (NoResultException nre) {
             return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            return null;
         }
     }
 
     public CustomerEntity updateCustomer(final CustomerEntity updateCustomerEntity) {
-        entityManager.merge(updateCustomerEntity);
+        try {
+            entityManager.merge(updateCustomerEntity);
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+        }
         return updateCustomerEntity;
     }
 

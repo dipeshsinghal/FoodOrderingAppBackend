@@ -11,10 +11,8 @@ import java.util.List;
 @Service
 public class CategoryService {
 
-
     @Autowired
     private CategoryDao categoryDao;
-
 
     public List<CategoryEntity> getCategoryList() {
         return categoryDao.getCategoryList();

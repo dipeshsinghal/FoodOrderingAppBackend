@@ -17,12 +17,20 @@ public class CustomerAuthDao {
     private EntityManager entityManager;
 
     public CustomerAuthEntity createAuthToken(final CustomerAuthEntity customerAuthEntity) {
-        entityManager.persist(customerAuthEntity);
+        try {
+            entityManager.persist(customerAuthEntity);
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+        }
         return customerAuthEntity;
     }
 
     public CustomerAuthEntity updateAuthToken(final CustomerAuthEntity customerAuthEntity) {
-        entityManager.merge(customerAuthEntity);
+        try {
+            entityManager.merge(customerAuthEntity);
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+        }
         return customerAuthEntity;
     }
 
@@ -30,6 +38,9 @@ public class CustomerAuthDao {
         try {
             return entityManager.createNamedQuery("customerAuthTokenByAccessToken", CustomerAuthEntity.class).setParameter("accessToken", accessToken).getSingleResult();
         } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
             return null;
         }
     }

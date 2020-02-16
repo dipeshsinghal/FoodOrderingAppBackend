@@ -20,6 +20,9 @@ public class AddressDao {
             return null;//entityManager.createNamedQuery("getAllAddressOfCustomer", AddressEntity.class).setParameter("customer_id",customerId).getResultList();
         } catch (NoResultException nre) {
             return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            return null;
         }
     }
 
@@ -28,12 +31,20 @@ public class AddressDao {
             return entityManager.createNamedQuery("getCustomerAddressByUUID", CustomerAddressEntity.class).setParameter("addressUuid",addressUuid).getSingleResult();
         } catch (NoResultException nre) {
             return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            return null;
         }
     }
 
     public AddressEntity saveAddress(AddressEntity addressEntity){
-        entityManager.persist(addressEntity);
+        try {
+            entityManager.persist(addressEntity);
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+        }
         return addressEntity;
+
     }
 
 }
