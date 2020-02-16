@@ -41,4 +41,12 @@ public class OrderDao {
         }
     }
 
+    public OrderEntity saveOrder(OrderEntity orderEntity) {
+        try {
+            entityManager.persist(orderEntity);
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+        }
+        return orderEntity;
+    }
 }

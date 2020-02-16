@@ -2,11 +2,8 @@ package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.common.Utility;
 import com.upgrad.FoodOrderingApp.api.model.*;
-import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
-import com.upgrad.FoodOrderingApp.service.businness.OrderService;
-import com.upgrad.FoodOrderingApp.service.entity.CouponEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
-import com.upgrad.FoodOrderingApp.service.entity.OrderEntity;
+import com.upgrad.FoodOrderingApp.service.businness.*;
+import com.upgrad.FoodOrderingApp.service.entity.*;
 import com.upgrad.FoodOrderingApp.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +26,18 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private AddressService addressService;
+
+    @Autowired
+    private PaymentService paymentService;
+
+    @Autowired
+    private RestaurantService restaurantService;
+
+    @Autowired
+    private ItemService itemService;
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -101,7 +111,35 @@ public class OrderController {
         // Call authenticationService with access token came in authorization field.
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        return null;
+        CouponEntity couponEntity = orderService.getCouponByCouponId(saveOrderRequest.getCouponId().toString());
+
+        AddressEntity addressEntity = addressService.getAddressByUUID(saveOrderRequest.getAddressId(), customerEntity);
+
+        PaymentEntity paymentEntity = paymentService.getPaymentByUUID(saveOrderRequest.getPaymentId().toString());
+
+        RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(saveOrderRequest.getRestaurantId().toString());
+
+        List<ItemQuantity> listItemQuantity = saveOrderRequest.getItemQuantities();
+
+        for(ItemQuantity itemQuantity: listItemQuantity ) {
+            ItemEntity itemEntity = itemService.getItemsByUuid(itemQuantity.getItemId().toString());
+        }
+
+        OrderEntity orderEntity = new OrderEntity();
+
+        orderEntity.setCustomer(customerEntity);
+        orderEntity.setCoupon(couponEntity);
+        orderEntity.setAddress(addressEntity);
+        orderEntity.setPayment(paymentEntity);
+        orderEntity.setRestaurant(restaurantEntity);
+        orderEntity.setBill(saveOrderRequest.getBill().doubleValue());
+        orderEntity.setDiscount(saveOrderRequest.getDiscount().doubleValue());
+
+        OrderEntity savedOrderEntity = orderService.saveOrder(orderEntity);
+
+        SaveOrderResponse saveOrderResponse = new SaveOrderResponse().id(savedOrderEntity.getUuid()).status("ORDER SUCCESSFULLY PLACED");
+
+        return new ResponseEntity<>(new SaveOrderResponse(), HttpStatus.OK);
     }
 }
 

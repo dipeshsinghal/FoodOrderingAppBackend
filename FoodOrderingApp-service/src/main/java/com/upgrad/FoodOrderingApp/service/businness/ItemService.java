@@ -11,6 +11,11 @@ import java.util.List;
 @Service
 public class ItemService {
 
+
+    public ItemEntity getItemsByUuid(String uuid) {
+        return null;
+    }
+
     public List<ItemEntity> getItemsByPopularity(RestaurantEntity restaurantEntity) {
 
         return null;

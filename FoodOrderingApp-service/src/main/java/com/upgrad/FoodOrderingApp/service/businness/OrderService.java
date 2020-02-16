@@ -19,7 +19,11 @@ public class OrderService {
     private OrderDao orderDao;
 
     public CouponEntity getCouponByCouponId(String couponId) throws CouponNotFoundException{
-        return orderDao.getCouponByCouponUuid(couponId);
+        CouponEntity couponEntity =  orderDao.getCouponByCouponUuid(couponId);
+        if( couponEntity == null ) {
+            throw new CouponNotFoundException("CPF-002", "No coupon by this id");
+        }
+        return couponEntity;
     }
 
     public CouponEntity getCouponByCouponName(String couponName) throws CouponNotFoundException {
@@ -32,7 +36,11 @@ public class OrderService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public OrderEntity saveOrder(OrderEntity orderEntity) {
-        return null;
+        try {
+            return orderDao.saveOrder(orderEntity);
+        } catch (Exception e) {
+           return null;
+        }
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
