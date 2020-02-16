@@ -1,8 +1,6 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
-import com.upgrad.FoodOrderingApp.api.model.CategoryDetailsResponse;
-import com.upgrad.FoodOrderingApp.api.model.CategoryListResponse;
-import com.upgrad.FoodOrderingApp.api.model.ItemList;
+import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
@@ -31,14 +29,25 @@ public class CategoryController {
             method = RequestMethod.GET,
             path = "/category",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CategoryListResponse> getGategoryList() {
+    public ResponseEntity<CategoriesListResponse> getAllCategoriesOrderedByName() {
 
-        List<CategoryEntity> listCategoryEntity = categoryService.getCategoryList();
+        List<CategoryEntity> listCategoryEntity = categoryService.getAllCategoriesOrderedByName();
 
-        CategoryListResponse categoryListResponse = new CategoryListResponse();
-        categoryListResponse.categoryName(listCategoryEntity.toArray().toString());
+        List<CategoryListResponse> listCategoryListResponse = null;
 
-        return new ResponseEntity<CategoryListResponse>(categoryListResponse, HttpStatus.OK);
+        if(listCategoryEntity.size() != 0) {
+
+            listCategoryListResponse = new ArrayList<>();
+
+            for (CategoryEntity c : listCategoryEntity) {
+                listCategoryListResponse.add(new CategoryListResponse()
+                        .id(UUID.fromString(c.getUuid()))
+                        .categoryName(c.getCategoryName()));
+            }
+        }
+
+        CategoriesListResponse categoriesListResponse = new CategoriesListResponse().categories(listCategoryListResponse);
+        return new ResponseEntity<>(categoriesListResponse, HttpStatus.OK);
     }
 
     @RequestMapping(

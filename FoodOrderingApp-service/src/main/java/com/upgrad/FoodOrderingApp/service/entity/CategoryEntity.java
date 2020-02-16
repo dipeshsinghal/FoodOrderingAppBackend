@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "category", schema = "public")
 @NamedQueries({
-        @NamedQuery(name = "getCategoryList", query = "select c from CategoryEntity c"),
+        @NamedQuery(name = "getAllCategoriesOrderedByName", query = "select c from CategoryEntity c order by c.categoryName"),
         @NamedQuery(name = "getCategoryById", query = "select c from CategoryEntity c where c.uuid =:uuid"),
 })
 public class CategoryEntity implements Serializable {

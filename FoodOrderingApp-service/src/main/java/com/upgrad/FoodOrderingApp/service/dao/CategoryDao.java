@@ -15,9 +15,9 @@ public class CategoryDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<CategoryEntity> getCategoryList(){
+    public List<CategoryEntity> getAllCategoriesOrderedByName(){
         try {
-            return entityManager.createNamedQuery("getCategoryList", CategoryEntity.class).getResultList();
+            return entityManager.createNamedQuery("getAllCategoriesOrderedByName", CategoryEntity.class).getResultList();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {
@@ -25,6 +25,8 @@ public class CategoryDao {
             return null;
         }
     }
+
+
 
     public CategoryEntity getCategoryById(String uuid) {
         try {

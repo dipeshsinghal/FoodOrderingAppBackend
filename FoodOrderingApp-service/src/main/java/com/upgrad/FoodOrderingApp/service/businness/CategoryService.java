@@ -16,10 +16,6 @@ public class CategoryService {
     @Autowired
     private CategoryDao categoryDao;
 
-    public List<CategoryEntity> getCategoryList() {
-        return categoryDao.getCategoryList();
-    }
-
     public List<CategoryEntity> getCategoriesByRestaurant(String restaurantId) {
         List<RestaurantCategoryEntity> listRestaurantCategoryEntity = categoryDao.getCategoriesByRestaurant(restaurantId);
         List<CategoryEntity> listCategoryEntity = new ArrayList<>();
@@ -38,6 +34,6 @@ public class CategoryService {
     }
 
     public List<CategoryEntity> getAllCategoriesOrderedByName() {
-        return null;
+        return categoryDao.getAllCategoriesOrderedByName();
     }
 }
