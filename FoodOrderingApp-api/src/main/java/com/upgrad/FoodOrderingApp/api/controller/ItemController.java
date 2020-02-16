@@ -1,8 +1,10 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
+import com.upgrad.FoodOrderingApp.api.model.ItemList;
 import com.upgrad.FoodOrderingApp.api.model.ItemListResponse;
-import com.upgrad.FoodOrderingApp.api.model.UpdateCustomerResponse;
+import com.upgrad.FoodOrderingApp.api.model.ItemList.ItemTypeEnum;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
+import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantItemEntity;
 import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,9 +40,21 @@ public class ItemController {
 
         RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurantId);
 
+        //TODO: Need to get Item list for restaurent
+
         List<RestaurantItemEntity> listRestaurantItemEntity = restaurantEntity.getRestaurantItem();
 
+        ArrayList<ItemList> listItemList = new ArrayList<>();
+
+        for(RestaurantItemEntity restaurantItemEntity: listRestaurantItemEntity){
+           ItemEntity itemEntity = restaurantItemEntity.getItem();
+            listItemList.add(new ItemList().id(UUID.fromString(itemEntity.getUuid()))
+                    .price(itemEntity.getPrice()).itemName(itemEntity.getItemName())
+                    .itemType(ItemTypeEnum.fromValue(itemEntity.getType().toString())));
+        }
+
         ItemListResponse itemListResponse = new ItemListResponse();
+        itemListResponse.addAll(0, listItemList);
         return new ResponseEntity<ItemListResponse>(itemListResponse, HttpStatus.OK);
     }
 
