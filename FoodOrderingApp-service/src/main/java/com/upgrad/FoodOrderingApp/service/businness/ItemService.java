@@ -12,6 +12,7 @@ import java.util.List;
 public class ItemService {
 
     public List<ItemEntity> getItemsByPopularity(RestaurantEntity restaurantEntity) {
+
         return null;
     }
 

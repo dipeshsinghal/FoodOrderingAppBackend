@@ -26,7 +26,8 @@ public class RestaurantService {
     }
 
     public List<RestaurantEntity> restaurantsByName(String restaurantName) {
-        return null;
+        List<RestaurantEntity> listRestaurantEntity = restaurantDao.restaurantsByName(restaurantName);
+        return listRestaurantEntity;
     }
 
     public List<RestaurantEntity> restaurantByCategory(String categoryId) {
