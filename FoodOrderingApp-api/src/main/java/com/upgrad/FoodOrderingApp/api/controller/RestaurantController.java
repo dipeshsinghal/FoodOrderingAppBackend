@@ -5,8 +5,11 @@ import com.upgrad.FoodOrderingApp.api.model.*;
 
 import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
+import com.upgrad.FoodOrderingApp.service.businness.ItemService;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
+import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
+import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import com.upgrad.FoodOrderingApp.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,9 @@ public class RestaurantController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ItemService itemService;
+
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/restaurant",
@@ -46,22 +52,21 @@ public class RestaurantController {
             path = "/restaurant/name/{restaurant_name}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantListResponse> getRestaurantListByName(
-            @PathVariable("restaurant_name") final String reastaurantName)
+            @PathVariable("restaurant_name") final String restaurantName)
             throws RestaurantNotFoundException {
 
-        if(reastaurantName == null || reastaurantName.isEmpty()){
-            throw new RestaurantNotFoundException("RNF-003", "Restaurant name field should not be empty");
-        }
-
-        List<RestaurantEntity> listRestaurantEntity = restaurantService.restaurantsByName(reastaurantName);
+        List<RestaurantEntity> listRestaurantEntity = restaurantService.restaurantsByName(restaurantName);
 
         List<RestaurantList> restaurantList = new ArrayList<>();
+
         for(RestaurantEntity restaurantEntity: listRestaurantEntity) {
+
+            List<CategoryEntity> listCategoryEntity = categoryService.getCategoriesByRestaurant(restaurantEntity.getUuid());
 
             restaurantList.add(new RestaurantList().id(UUID.fromString(restaurantEntity.getUuid()))
                     .restaurantName(restaurantEntity.getRestaurantName())
                     .averagePrice(restaurantEntity.getAvgPrice())
-                    .categories(categoryService.getCategoriesByRestaurant(restaurantEntity.getUuid()).toString())
+                    .categories(listCategoryEntity.toString())
                     .address(getRestaurantDetailsResponseAddress(restaurantEntity))
                     .customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
                     .numberCustomersRated(restaurantEntity.getNumberCustomersRated())
@@ -99,8 +104,10 @@ public class RestaurantController {
 
         RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurantId);
 
+        List<CategoryList> listCategoryList = getCategoryListByRestaurantId(restaurantId);
+
         //create response with create customer uuid
-        RestaurantDetailsResponse restaurantDetailsResponse = getRestaurantDetailsResponse(restaurantEntity);
+        RestaurantDetailsResponse restaurantDetailsResponse = getRestaurantDetailsResponse(restaurantEntity, listCategoryList);
 
         return new ResponseEntity<RestaurantDetailsResponse>(restaurantDetailsResponse, HttpStatus.OK);
     }
@@ -145,17 +152,39 @@ public class RestaurantController {
                         .id(UUID.fromString(restaurantEntity.getAddress().getState().getUuid()))
                         .stateName(restaurantEntity.getAddress().getState().getStateName()));
     }
-    private RestaurantDetailsResponse getRestaurantDetailsResponse(RestaurantEntity restaurantEntity)  {
-        return new RestaurantDetailsResponse().id(UUID.fromString(restaurantEntity.getAddress().getUuid()))
+    private RestaurantDetailsResponse getRestaurantDetailsResponse(RestaurantEntity restaurantEntity, List<CategoryList> listCategoryList)  {
+
+        return new RestaurantDetailsResponse().id(UUID.fromString(restaurantEntity.getUuid()))
                 .restaurantName(restaurantEntity.getRestaurantName())
                 .averagePrice(restaurantEntity.getAvgPrice())
-                .categories(null)
+                .categories(listCategoryList)
                 .address(getRestaurantDetailsResponseAddress(restaurantEntity))
                 .customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
                 .numberCustomersRated(restaurantEntity.getNumberCustomersRated())
                 .photoURL(restaurantEntity.getPhotoUrl())
                 .address(getRestaurantDetailsResponseAddress(restaurantEntity))
                 .averagePrice(restaurantEntity.getAvgPrice());
+    }
+    private List<CategoryList> getCategoryListByRestaurantId(String restaurantId) {
+        List<CategoryEntity> listCategory = categoryService.getCategoriesByRestaurant(restaurantId);
+        List<CategoryList> listCategoryList = new ArrayList<>();
+        for (CategoryEntity c : listCategory) {
+
+            List<ItemEntity> listItemEntity = itemService.getItemsByCategoryAndRestaurant(restaurantId, c.getUuid());
+            List<ItemList> listItemList = new ArrayList<>();
+            for (ItemEntity i : listItemEntity) {
+                listItemList.add(new ItemList()
+                        .id(UUID.fromString(i.getUuid()))
+                        .itemName(i.getItemName())
+                        .itemType(ItemList.ItemTypeEnum.fromValue(i.getType().toString()))
+                        .price(i.getPrice()));
+            }
+            listCategoryList.add(new CategoryList()
+                    .id(UUID.fromString(c.getUuid()))
+                    .categoryName(c.getCategoryName())
+                    .itemList(listItemList));
+        }
+        return listCategoryList;
     }
 //    private CategoryListResponse getCategoryListResponse(RestaurantEntity restaurantEntity)  {
 //        categoryService.getCategoriesByRestaurant(restaurantEntity.getUuid();

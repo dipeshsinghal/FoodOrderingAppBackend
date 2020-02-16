@@ -1,5 +1,6 @@
 package com.upgrad.FoodOrderingApp.service.businness;
 
+import com.upgrad.FoodOrderingApp.service.dao.ItemDao;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.util.List;
 @Service
 public class ItemService {
 
+    private ItemDao itemDao;
 
     public ItemEntity getItemsByUuid(String uuid) {
         return null;
@@ -22,6 +24,6 @@ public class ItemService {
     }
 
     public List<ItemEntity> getItemsByCategoryAndRestaurant(String restaurantId, String categoryId) {
-        return null;
+        return itemDao.getItemsByCategoryAndRestaurant(restaurantId,categoryId);
     }
 }
