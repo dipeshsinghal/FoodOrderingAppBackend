@@ -70,7 +70,7 @@ public class RestaurantController {
     public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(
             @RequestHeader("authorization") final String authorization,
             @PathVariable("restaurant_id") final UUID restaurantId,
-            @RequestBody BigDecimal customerRating)
+            @RequestBody(required = false) BigDecimal customerRating)
             throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
         // Call authenticationService with access token came in authorization field.

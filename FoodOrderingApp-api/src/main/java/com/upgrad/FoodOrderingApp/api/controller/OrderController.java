@@ -53,7 +53,7 @@ public class OrderController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SaveOrderResponse> saveOrder(
             @RequestHeader("authorization") final String authorization,
-            @RequestBody SaveOrderRequest saveOrderRequest)
+            @RequestBody(required = false) SaveOrderRequest saveOrderRequest)
             throws AuthorizationFailedException, CouponNotFoundException,
             AddressNotFoundException, PaymentMethodNotFoundException,
             RestaurantNotFoundException, ItemNotFoundException {

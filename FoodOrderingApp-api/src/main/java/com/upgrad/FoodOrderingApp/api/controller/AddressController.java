@@ -38,7 +38,7 @@ public class AddressController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SaveAddressResponse> saveAddress(
             @RequestHeader("authorization") final String authorization,
-            @RequestBody final SaveAddressRequest saveAddressRequest)
+            @RequestBody(required = false) final SaveAddressRequest saveAddressRequest)
             throws AuthorizationFailedException, SaveAddressException, AddressNotFoundException {
 
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));

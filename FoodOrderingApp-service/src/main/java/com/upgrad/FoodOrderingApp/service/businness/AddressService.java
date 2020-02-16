@@ -28,7 +28,7 @@ public class AddressService {
     @Transactional(propagation = Propagation.REQUIRED)
     public AddressEntity saveAddress(AddressEntity addressEntity, CustomerEntity customerEntity) throws SaveAddressException {
 
-        if (addressEntity.getPincode() == null || !addressEntity.getPincode().matches("[0-9]{6,6}")) {
+        if ( addressEntity.getPincode() == null || !addressEntity.getPincode().matches("[0-9]{6,6}")) {
             throw new SaveAddressException("SAR-002", "Invalid pincode.");
         }
 

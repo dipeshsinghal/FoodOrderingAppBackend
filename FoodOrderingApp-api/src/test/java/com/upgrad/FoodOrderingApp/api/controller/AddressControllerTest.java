@@ -66,7 +66,7 @@ public class AddressControllerTest {
                 .perform(post("/address?content=my_address")
                         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                         .header("authorization", "Bearer database_accesstoken2")
-                        .content("{\"flat_building_name\":\"xyz\", \"locality\":\"abc\", \"city\":\"pqr\", \"pincode\":\"\", \"state_uuid\":\"testUUID\"}"))
+                        .content("{\"flat_building_name\":\"xyz\", \"locality\":\"abc\", \"city\":\"pqr\", \"pincode\":\"100000\", \"state_uuid\":\"testUUID\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").value("randomUuid001"))
                 .andExpect(jsonPath("status").value("ADDRESS SUCCESSFULLY REGISTERED"));
