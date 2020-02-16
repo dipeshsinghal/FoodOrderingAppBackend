@@ -28,8 +28,6 @@ public class OrderService {
             throw new CouponNotFoundException("CPF-001", "No coupon by this name");
         }
         return couponEntity;
-
-
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -42,8 +40,8 @@ public class OrderService {
         return null;
     }
 
-    public List<OrderEntity> getOrdersByCustomers(String customerId) {
-        return null;
+    public List<OrderEntity> getOrdersByCustomers(String uuid) {
+        return orderDao.getOrdersByCustomers(uuid);
     }
 
 

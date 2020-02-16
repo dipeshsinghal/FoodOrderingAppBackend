@@ -6,6 +6,7 @@ import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.businness.OrderService;
 import com.upgrad.FoodOrderingApp.service.entity.CouponEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
+import com.upgrad.FoodOrderingApp.service.entity.OrderEntity;
 import com.upgrad.FoodOrderingApp.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -62,7 +66,24 @@ public class OrderController {
         // Call authenticationService with access token came in authorization field.
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        return null;
+        List<OrderEntity> listOrderEntity = orderService.getOrdersByCustomers(customerEntity.getUuid());
+
+        List<OrderList> listOrderList = new ArrayList<>();
+        for(OrderEntity orderEntity: listOrderEntity){
+            listOrderList.add(new OrderList()
+                    .id(UUID.fromString(orderEntity.getUuid()))
+                    .date(orderEntity.getTimestamp().toString())
+                    .bill(BigDecimal.valueOf(orderEntity.getBill()))
+                    .discount(BigDecimal.valueOf(orderEntity.getDiscount()))
+                    .customer(null)
+                    .payment(null)
+                    .address(null)
+                    .coupon(null)
+                    .itemQuantities(new ArrayList<>()));
+        }
+        CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse().orders(listOrderList);
+
+        return new ResponseEntity<>(customerOrderResponse,HttpStatus.OK);
     }
 
     @RequestMapping(
