@@ -22,4 +22,12 @@ public class ItemDao {
             return null;
         }
     }
+
+    public List<ItemEntity> getItemsByPopularity(String RestaurantUuid) {
+        try {
+            return null;
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
 }

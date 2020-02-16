@@ -86,9 +86,43 @@ public class RestaurantController {
             method = RequestMethod.GET,
             path = "/restaurant/category/{category_id}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<RestaurantListResponse> getRestaurantListByCategory(final UUID categoryId)
+    public ResponseEntity<RestaurantListResponse> getRestaurantListByCategory(
+            @PathVariable("category_id") final String categoryId)
             throws CategoryNotFoundException {
-        return null;
+
+        if(categoryId == null || categoryId.isEmpty()) {
+            throw new CategoryNotFoundException("CNF-001","Category id field should not be empty");
+        }
+
+        CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
+
+        List<RestaurantEntity> listRestaurantEntity = restaurantService.restaurantByCategory(categoryId);
+
+        List<RestaurantList> listRestaurantList = new ArrayList<>();
+
+        for(RestaurantEntity r :listRestaurantEntity) {
+            listRestaurantList.add(new RestaurantList()
+                    .id(UUID.fromString(r.getUuid()))
+                    .restaurantName(r.getRestaurantName())
+                    .photoURL(r.getPhotoUrl())
+                    .customerRating(BigDecimal.valueOf(r.getCustomerRating()))
+                    .numberCustomersRated(r.getNumberCustomersRated())
+                    .address(new RestaurantDetailsResponseAddress()
+                            .id(UUID.fromString(r.getAddress().getUuid()))
+                            .flatBuildingName(r.getAddress().getFlatBuilNo())
+                            .locality(r.getAddress().getLocality())
+                            .city(r.getAddress().getCity())
+                            .pincode(r.getAddress().getPincode())
+                            .state(new RestaurantDetailsResponseAddressState()
+                                    .id(UUID.fromString(r.getAddress().getState().getUuid()))
+                                    .stateName(r.getAddress().getState().getStateName())))
+                    .categories(r.getRestaurantCategory().toString())
+                    .averagePrice(r.getAvgPrice()));
+        }
+
+        RestaurantListResponse restaurantListResponse = new RestaurantListResponse().restaurants(listRestaurantList);
+
+        return new ResponseEntity<>(restaurantListResponse, HttpStatus.OK);
     }
 
     @RequestMapping(
