@@ -112,14 +112,27 @@ public class RestaurantController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(
             @RequestHeader("authorization") final String authorization,
-            @PathVariable("restaurant_id") final UUID restaurantId,
-            @RequestBody(required = false) BigDecimal customerRating)
+            @PathVariable("restaurant_id") final String restaurantId,
+            @RequestBody(required = false) Double customerRating)
             throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
         // Call authenticationService with access token came in authorization field.
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        return null;
+        if( restaurantId == null || restaurantId.isEmpty()) {
+            throw new RestaurantNotFoundException("RNF-002","Restaurant id field should not be empty");
+        }
+
+        RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurantId);
+
+        if( customerRating == null || customerRating < 1.0 || customerRating > 5.0 ) {
+            throw new InvalidRatingException("IRE-001","Restaurant should be in the range of 1 to 5");
+        }
+
+        RestaurantUpdatedResponse restaurantUpdatedResponse = new RestaurantUpdatedResponse()
+                .id(UUID.fromString(restaurantEntity.getUuid())).status("RESTAURANT RATING UPDATED SUCCESSFULLY");
+
+        return new ResponseEntity<RestaurantUpdatedResponse>(restaurantUpdatedResponse, HttpStatus.OK);
     }
 
     private RestaurantDetailsResponseAddress getRestaurantDetailsResponseAddress(RestaurantEntity restaurantEntity)  {
