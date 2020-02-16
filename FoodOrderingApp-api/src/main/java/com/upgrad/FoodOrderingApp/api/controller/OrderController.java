@@ -113,9 +113,9 @@ public class OrderController {
 
         CouponEntity couponEntity = orderService.getCouponByCouponId(saveOrderRequest.getCouponId().toString());
 
-        AddressEntity addressEntity = addressService.getAddressByUUID(saveOrderRequest.getAddressId(), customerEntity);
-
         PaymentEntity paymentEntity = paymentService.getPaymentByUUID(saveOrderRequest.getPaymentId().toString());
+
+        AddressEntity addressEntity = addressService.getAddressByUUID(saveOrderRequest.getAddressId(), customerEntity);
 
         RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(saveOrderRequest.getRestaurantId().toString());
 
@@ -139,7 +139,7 @@ public class OrderController {
 
         SaveOrderResponse saveOrderResponse = new SaveOrderResponse().id(savedOrderEntity.getUuid()).status("ORDER SUCCESSFULLY PLACED");
 
-        return new ResponseEntity<>(new SaveOrderResponse(), HttpStatus.OK);
+        return new ResponseEntity<>(saveOrderResponse, HttpStatus.CREATED);
     }
 }
 

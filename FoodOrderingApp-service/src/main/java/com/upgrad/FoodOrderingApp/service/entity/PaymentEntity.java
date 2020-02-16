@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = "payment", schema = "public")
 @NamedQueries({
         @NamedQuery(name = "getAllPayment", query = "select p from PaymentEntity p"),
+        @NamedQuery(name = "getPaymentByUUID", query = "select p from PaymentEntity p where p.uuid =:uuid")
 })
 public class PaymentEntity implements Serializable {
     @Id
