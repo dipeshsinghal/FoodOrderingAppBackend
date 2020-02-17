@@ -48,7 +48,7 @@ public class RestaurantController {
 
         List<RestaurantEntity> listRestaurantEntity = restaurantService.restaurantsByRating();
 
-        List<RestaurantList> restaurantList = restaurantList = new ArrayList<>();;
+        List<RestaurantList> restaurantList = new ArrayList<>();
 
         for (RestaurantEntity restaurantEntity : listRestaurantEntity) {
 
@@ -113,8 +113,6 @@ public class RestaurantController {
             @PathVariable("category_id") final String categoryId)
             throws CategoryNotFoundException {
 
-        CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
-
         List<RestaurantEntity> listRestaurantEntity = restaurantService.restaurantByCategory(categoryId);
 
         List<RestaurantList> listRestaurantList = new ArrayList<>();
@@ -135,7 +133,7 @@ public class RestaurantController {
                             .state(new RestaurantDetailsResponseAddressState()
                                     .id(UUID.fromString(r.getAddress().getState().getUuid()))
                                     .stateName(r.getAddress().getState().getStateName())))
-                    .categories(r.getRestaurantCategory().toString())
+                    .categories(categoryService.getCategoriesByRestaurant(r.getUuid()).toString())
                     .averagePrice(r.getAvgPrice()));
         }
 
