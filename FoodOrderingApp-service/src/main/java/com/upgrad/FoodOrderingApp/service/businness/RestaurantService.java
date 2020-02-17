@@ -19,6 +19,10 @@ public class RestaurantService {
     @Autowired
     private RestaurantDao restaurantDao;
 
+//    public  List<RestaurantEntity> getAllRestaurant() {
+//        return restaurantDao.getAllRestaurant();
+//    }
+
     public RestaurantEntity restaurantByUUID(String uuid) throws RestaurantNotFoundException {
         RestaurantEntity restaurantEntity = restaurantDao.restaurantByUUID(uuid);
         if( restaurantEntity == null ) {
@@ -40,7 +44,7 @@ public class RestaurantService {
     }
 
     public List<RestaurantEntity> restaurantsByRating() {
-        return null;
+        return restaurantDao.restaurantsByRating();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

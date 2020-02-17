@@ -45,7 +45,29 @@ public class RestaurantController {
             path = "/restaurant",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<RestaurantListResponse> getRestaurantList() {
-        return null;
+
+        List<RestaurantEntity> listRestaurantEntity = restaurantService.restaurantsByRating();
+
+        List<RestaurantList> restaurantList = restaurantList = new ArrayList<>();;
+
+        for (RestaurantEntity restaurantEntity : listRestaurantEntity) {
+
+            List<CategoryEntity> listCategoryEntity = categoryService.getCategoriesByRestaurant(restaurantEntity.getUuid());
+
+            restaurantList.add(new RestaurantList().id(UUID.fromString(restaurantEntity.getUuid()))
+                    .restaurantName(restaurantEntity.getRestaurantName())
+                    .averagePrice(restaurantEntity.getAvgPrice())
+                    .categories(listCategoryEntity.toString())
+                    .address(getRestaurantDetailsResponseAddress(restaurantEntity))
+                    .customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
+                    .numberCustomersRated(restaurantEntity.getNumberCustomersRated())
+                    .photoURL(restaurantEntity.getPhotoUrl()));
+
+        }
+
+        RestaurantListResponse restaurantListResponse = new RestaurantListResponse().restaurants(restaurantList);
+
+        return new ResponseEntity<RestaurantListResponse>(restaurantListResponse, HttpStatus.OK);
     }
 
     @RequestMapping(

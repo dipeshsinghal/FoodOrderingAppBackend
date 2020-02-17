@@ -14,6 +14,17 @@ public class RestaurantDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    public List<RestaurantEntity> restaurantsByRating() {
+        try {
+            return entityManager.createNamedQuery("restaurantsByRating", RestaurantEntity.class).getResultList();
+        } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            return null;
+        }
+    }
+
     public RestaurantEntity updateRestaurant(final RestaurantEntity updateRestaurantEntity) {
         try {
             entityManager.merge(updateRestaurantEntity);
@@ -28,12 +39,18 @@ public class RestaurantDao {
             return entityManager.createNamedQuery("getRestaurantByUUID", RestaurantEntity.class).setParameter("uuid", uuid).getSingleResult();
         } catch (NoResultException nre) {
             return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            return null;
         }
     }
     public List<RestaurantEntity> restaurantsByName(String restaurantName) {
         try {
             return entityManager.createNamedQuery("getRestaurantsByName", RestaurantEntity.class).setParameter("restaurantName", "%" +restaurantName + "%").getResultList();
         } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
             return null;
         }
     }
