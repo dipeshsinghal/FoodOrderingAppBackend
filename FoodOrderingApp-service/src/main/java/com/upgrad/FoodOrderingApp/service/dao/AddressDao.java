@@ -51,4 +51,14 @@ public class AddressDao {
         return customerAddressEntity.getAddress();
     }
 
+    public AddressEntity deleteAddress(AddressEntity addressEntity){
+        try {
+            entityManager.remove(addressEntity);
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            e.printStackTrace();
+        }
+        return addressEntity;
+    }
+
 }

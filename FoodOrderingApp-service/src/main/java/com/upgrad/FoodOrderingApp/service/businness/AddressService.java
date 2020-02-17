@@ -56,7 +56,7 @@ public class AddressService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public AddressEntity deleteAddress(AddressEntity addressEntity) {
-        return null;
+        return addressDao.deleteAddress(addressEntity);
     }
 
     public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) throws AuthorizationFailedException, AddressNotFoundException{

@@ -97,11 +97,11 @@ public class AddressController {
         return new ResponseEntity<AddressListResponse>(addressListResponse, HttpStatus.OK);
     }
 
-    @RequestMapping(
-            method = RequestMethod.DELETE,
-            path = "/address/{address_id}",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    @RequestMapping(
+//            method = RequestMethod.DELETE,
+//            path = "/address/{address_id}",
+//            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping("/address/{address_id}")
     public ResponseEntity<DeleteAddressResponse> deleteAddress(
             @RequestHeader("authorization") final String authorization,
             @PathVariable("address_id") final String addressId)
@@ -116,7 +116,7 @@ public class AddressController {
 
         DeleteAddressResponse deleteAddressResponse = new DeleteAddressResponse().id(UUID.fromString(deletedAddressEntity.getUuid())).status("ADDRESS DELETED SUCCESSFULLY");
 
-        return  new ResponseEntity<DeleteAddressResponse>(deleteAddressResponse, HttpStatus.OK);
+        return  new ResponseEntity<>(deleteAddressResponse, HttpStatus.OK);
     }
 
     @RequestMapping(
