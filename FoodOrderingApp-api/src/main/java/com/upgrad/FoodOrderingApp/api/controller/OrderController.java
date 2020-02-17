@@ -171,8 +171,6 @@ public class OrderController {
             OrderItemEntity savedOrderItemEntity = orderService.saveOrderItem(orderItemEntity);
         }
 
-
-
         SaveOrderResponse saveOrderResponse = new SaveOrderResponse().id(savedOrderEntity.getUuid()).status("ORDER SUCCESSFULLY PLACED");
 
         return new ResponseEntity<>(saveOrderResponse, HttpStatus.CREATED);

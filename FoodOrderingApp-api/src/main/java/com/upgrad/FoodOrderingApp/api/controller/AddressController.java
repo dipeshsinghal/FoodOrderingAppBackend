@@ -122,13 +122,15 @@ public class AddressController {
 
         List<StateEntity> listStateEntity = addressService.getAllStates();
 
-        List<StatesList> listStatesList = new ArrayList<StatesList>();
-        for (StateEntity stateEntity: listStateEntity) {
-            listStatesList.add(new StatesList().id(UUID.fromString(stateEntity.getUuid())).stateName(stateEntity.getStateName()));
+        List<StatesList> listStatesList = null;
+
+        if( listStateEntity.size() != 0 ) {
+            listStatesList = new ArrayList<StatesList>();
+            for (StateEntity stateEntity: listStateEntity) {
+                listStatesList.add(new StatesList().id(UUID.fromString(stateEntity.getUuid())).stateName(stateEntity.getStateName()));
+            }
         }
-        if(listStatesList.size() == 0 ) {
-            listStatesList = null;
-        }
+
         StatesListResponse statesListResponse = new StatesListResponse().states(listStatesList);
         return new ResponseEntity<StatesListResponse>(statesListResponse, HttpStatus.OK);
     }

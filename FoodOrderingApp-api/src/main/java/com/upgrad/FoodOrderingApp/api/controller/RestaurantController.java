@@ -94,9 +94,7 @@ public class RestaurantController {
                     .customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
                     .numberCustomersRated(restaurantEntity.getNumberCustomersRated())
                     .photoURL(restaurantEntity.getPhotoUrl()));
-
         }
-
 
         //create response with create customer uuid
         RestaurantListResponse restaurantListResponse = new RestaurantListResponse().restaurants(restaurantList);
@@ -163,12 +161,12 @@ public class RestaurantController {
         return new ResponseEntity<RestaurantDetailsResponse>(restaurantDetailsResponse, HttpStatus.OK);
     }
 
-//    @RequestMapping(
-//            method = RequestMethod.PUT,
-//            path = "/restaurant/{restaurant_id}",
-//            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-//            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PutMapping("/restaurant/{restaurant_id}")
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            path = "/restaurant/{restaurant_id}",
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    //@PutMapping("/restaurant/{restaurant_id}")
     public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(
             @RequestHeader("authorization") final String authorization,
             @PathVariable("restaurant_id") final String restaurantId,
@@ -236,7 +234,4 @@ public class RestaurantController {
         }
         return listCategoryList;
     }
-//    private CategoryListResponse getCategoryListResponse(RestaurantEntity restaurantEntity)  {
-//        categoryService.getCategoriesByRestaurant(restaurantEntity.getUuid();
-//    }
 }
