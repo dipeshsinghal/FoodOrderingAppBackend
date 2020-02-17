@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Table(name = "customer_address", schema = "public")
 @NamedQueries({
         @NamedQuery(name = "getCustomerAddressByUUID", query = "select ca from CustomerAddressEntity ca where ca.address.uuid =:addressUuid"),
-        @NamedQuery(name = "getAllCustomerAddress", query = "select ca from CustomerAddressEntity ca where ca.customer.uuid =:customerUuid")
+        @NamedQuery(name = "getAllCustomerAddress", query = "select ca from CustomerAddressEntity ca where ca.customer =:customer")
 })
 public class CustomerAddressEntity implements Serializable {
     @Id
@@ -20,11 +20,11 @@ public class CustomerAddressEntity implements Serializable {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "address")
+    @JoinColumn(name = "address_id")
     private AddressEntity address;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer")
+    @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
     public long getId() {

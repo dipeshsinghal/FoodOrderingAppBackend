@@ -2,6 +2,7 @@ package com.upgrad.FoodOrderingApp.service.dao;
 
 import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAddressEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -27,9 +28,9 @@ public class AddressDao {
         }
     }
 
-    public List<CustomerAddressEntity> getAllCustomerAddress(String customerUuid){
+    public List<CustomerAddressEntity> getAllCustomerAddress(CustomerEntity customer){
         try {
-            return entityManager.createNamedQuery("getAllCustomerAddress", CustomerAddressEntity.class).setParameter("customerUuid",customerUuid).getResultList();
+            return entityManager.createNamedQuery("getAllCustomerAddress", CustomerAddressEntity.class).setParameter("customer",customer).getResultList();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {
@@ -39,15 +40,15 @@ public class AddressDao {
         }
     }
 
-    public AddressEntity saveAddress(AddressEntity addressEntity){
+    public AddressEntity saveAddress(CustomerAddressEntity customerAddressEntity){
         try {
-            entityManager.persist(addressEntity);
+            entityManager.persist(customerAddressEntity.getAddress());
+            entityManager.persist(customerAddressEntity);
         } catch (Exception e) {
             System.out.println(".....................Database Error");
             e.printStackTrace();
         }
-        return addressEntity;
-
+        return customerAddressEntity.getAddress();
     }
 
 }

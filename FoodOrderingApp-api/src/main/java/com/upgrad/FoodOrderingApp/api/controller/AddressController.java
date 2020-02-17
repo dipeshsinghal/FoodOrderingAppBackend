@@ -49,6 +49,11 @@ public class AddressController {
 
         //create a new random unique uuid and set it to new Address Entity
         addressEntity.setUuid(UUID.randomUUID().toString());
+        addressEntity.setFlatBuilNo(saveAddressRequest.getFlatBuildingName());
+        addressEntity.setLocality(saveAddressRequest.getLocality());
+        addressEntity.setCity(saveAddressRequest.getCity());
+        addressEntity.setPincode(saveAddressRequest.getPincode());
+        addressEntity.setState(stateEntity);
 
         //Call AddressService to create a new AddressEntity
         AddressEntity createdAddressEntity =  addressService.saveAddress(addressEntity, customerEntity);

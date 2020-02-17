@@ -30,7 +30,7 @@ public class AddressService {
     @Transactional(propagation = Propagation.REQUIRED)
     public AddressEntity saveAddress(AddressEntity addressEntity, CustomerEntity customerEntity) throws SaveAddressException {
 
-        if ( addressEntity.getPincode() == null || !addressEntity.getPincode().matches("[0-9]{6,6}")) {
+        if ( addressEntity.getPincode() == null || !(addressEntity.getPincode().matches("^\\d{6,6}$"))) {
             throw new SaveAddressException("SAR-002", "Invalid pincode.");
         }
 
@@ -43,8 +43,12 @@ public class AddressService {
             throw new SaveAddressException("SAR-001", "No field can be empty.");
         }
 
+        CustomerAddressEntity customerAddressEntity = new CustomerAddressEntity();
+        customerAddressEntity.setAddress(addressEntity);
+        customerAddressEntity.setCustomer(customerEntity);
+
         try {
-            return addressDao.saveAddress(addressEntity);
+            return addressDao.saveAddress(customerAddressEntity);
         } catch (Exception e) {
             throw new SaveAddressException("ADR-000", "Unknown database error while saving Address");
         }
@@ -68,7 +72,7 @@ public class AddressService {
 
     public List<AddressEntity> getAllAddress(CustomerEntity customerEntity) {
 
-        List<CustomerAddressEntity> listCustomerAddressEntity = addressDao.getAllCustomerAddress(customerEntity.getUuid());
+        List<CustomerAddressEntity> listCustomerAddressEntity = addressDao.getAllCustomerAddress(customerEntity);
         List<AddressEntity> listAddressEntity = new ArrayList<>();
         for (CustomerAddressEntity ca: listCustomerAddressEntity) {
             listAddressEntity.add(ca.getAddress());
