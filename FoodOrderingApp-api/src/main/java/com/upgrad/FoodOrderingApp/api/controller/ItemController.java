@@ -3,6 +3,7 @@ package com.upgrad.FoodOrderingApp.api.controller;
 import com.upgrad.FoodOrderingApp.api.model.ItemList;
 import com.upgrad.FoodOrderingApp.api.model.ItemListResponse;
 import com.upgrad.FoodOrderingApp.api.model.ItemList.ItemTypeEnum;
+import com.upgrad.FoodOrderingApp.service.businness.ItemService;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
@@ -30,6 +31,9 @@ public class ItemController {
     @Autowired
     private RestaurantService restaurantService;
 
+    @Autowired
+    private ItemService itemService;
+
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/item/restaurant/{restaurant_id}",
@@ -40,17 +44,14 @@ public class ItemController {
 
         RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurantId);
 
-        //TODO: Need to get Item list for restaurent
-
-        List<RestaurantItemEntity> listRestaurantItemEntity = restaurantEntity.getRestaurantItem();
+        List<ItemEntity> listItemEntity = itemService.getItemsByPopularity(restaurantEntity);
 
         ArrayList<ItemList> listItemList = new ArrayList<>();
 
-        for(RestaurantItemEntity restaurantItemEntity: listRestaurantItemEntity){
-           ItemEntity itemEntity = restaurantItemEntity.getItem();
-            listItemList.add(new ItemList().id(UUID.fromString(itemEntity.getUuid()))
-                    .price(itemEntity.getPrice()).itemName(itemEntity.getItemName())
-                    .itemType(ItemTypeEnum.fromValue(itemEntity.getType().toString())));
+        for(ItemEntity i: listItemEntity){
+            listItemList.add(new ItemList().id(UUID.fromString(i.getUuid()))
+                    .price(i.getPrice()).itemName(i.getItemName())
+                    .itemType(ItemTypeEnum.fromValue(i.getType().toString())));
         }
 
         ItemListResponse itemListResponse = new ItemListResponse();
