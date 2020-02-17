@@ -45,7 +45,11 @@ public class OrderService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public OrderItemEntity saveOrderItem(OrderItemEntity orderItemEntity) {
-        return null;
+        try {
+            return orderDao.saveOrderItem(orderItemEntity);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public List<OrderEntity> getOrdersByCustomers(String uuid) {

@@ -1,9 +1,6 @@
 package com.upgrad.FoodOrderingApp.service.dao;
 
-import com.upgrad.FoodOrderingApp.service.entity.CouponEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
-import com.upgrad.FoodOrderingApp.service.entity.OrderEntity;
-import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
+import com.upgrad.FoodOrderingApp.service.entity.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -48,5 +45,14 @@ public class OrderDao {
             System.out.println(".....................Database Error");
         }
         return orderEntity;
+    }
+
+    public OrderItemEntity saveOrderItem(OrderItemEntity orderItemEntity) {
+        try {
+            entityManager.persist(orderItemEntity);
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+        }
+        return orderItemEntity;
     }
 }
