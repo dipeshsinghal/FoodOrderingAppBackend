@@ -20,6 +20,9 @@ public class StateDao {
             return entityManager.createNamedQuery("getStateByUuid", StateEntity.class).setParameter("uuid", uuid).getSingleResult();
         } catch (NoResultException nre) {
             return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            return null;
         }
     }
 
@@ -27,6 +30,9 @@ public class StateDao {
         try {
             return entityManager.createNamedQuery("getAllState", StateEntity.class).getResultList();
         } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
             return null;
         }
     }

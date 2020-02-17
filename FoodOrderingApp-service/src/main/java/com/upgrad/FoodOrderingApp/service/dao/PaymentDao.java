@@ -20,6 +20,9 @@ public class PaymentDao {
             return entityManager.createNamedQuery("getAllPayment", PaymentEntity.class).getResultList();
         } catch (NoResultException nre) {
             return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            return null;
         }
     }
 
@@ -27,6 +30,9 @@ public class PaymentDao {
         try {
             return entityManager.createNamedQuery("getPaymentByUUID", PaymentEntity.class).setParameter("uuid", uuid).getSingleResult();
         } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
             return null;
         }
     }

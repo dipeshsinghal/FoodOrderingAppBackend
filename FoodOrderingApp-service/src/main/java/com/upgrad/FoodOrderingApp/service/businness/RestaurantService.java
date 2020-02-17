@@ -19,10 +19,6 @@ public class RestaurantService {
     @Autowired
     private RestaurantDao restaurantDao;
 
-//    public  List<RestaurantEntity> getAllRestaurant() {
-//        return restaurantDao.getAllRestaurant();
-//    }
-
     public RestaurantEntity restaurantByUUID(String uuid) throws RestaurantNotFoundException {
         RestaurantEntity restaurantEntity = restaurantDao.restaurantByUUID(uuid);
         if( restaurantEntity == null ) {
@@ -40,6 +36,7 @@ public class RestaurantService {
     }
 
     public List<RestaurantEntity> restaurantByCategory(String categoryId) throws CategoryNotFoundException {
+        //TODO: Implement this
         return null;
     }
 

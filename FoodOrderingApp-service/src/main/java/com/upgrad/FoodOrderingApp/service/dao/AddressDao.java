@@ -15,17 +15,6 @@ public class AddressDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<AddressEntity> getAllAddressOfCustomer(long customerId){
-        try {
-            return null;//entityManager.createNamedQuery("getAllAddressOfCustomer", AddressEntity.class).setParameter("customer_id",customerId).getResultList();
-        } catch (NoResultException nre) {
-            return null;
-        } catch (Exception e) {
-            System.out.println(".....................Database Error");
-            return null;
-        }
-    }
-
     public CustomerAddressEntity getAddressByUUID(String addressUuid, String customerUuid){
         try {
             return entityManager.createNamedQuery("getCustomerAddressByUUID", CustomerAddressEntity.class).setParameter("addressUuid",addressUuid).getSingleResult();

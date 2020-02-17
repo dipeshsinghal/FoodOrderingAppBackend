@@ -12,10 +12,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "address", schema = "public")
-@NamedQueries({
-       //@NamedQuery(name = "getAllAddressOfCustomer", query = "select a from AddressEntity a where a.customer_id =:customer_id")
-        //@NamedQuery(name = "getAddressByUUID", query = "select a from AddressEntity a, CustomerEntity c where a.uuid =:addressUuid and c.uuid =:customerUuid")
-})
 public class AddressEntity implements Serializable {
     @Id
     @Column(name = "id")

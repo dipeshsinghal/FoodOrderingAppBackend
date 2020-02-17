@@ -35,6 +35,9 @@ public class OrderDao {
             return entityManager.createNamedQuery("getOrdersByCustomers", OrderEntity.class).setParameter("uuid", uuid).getResultList();
         } catch (NoResultException nre) {
             return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            return null;
         }
     }
 

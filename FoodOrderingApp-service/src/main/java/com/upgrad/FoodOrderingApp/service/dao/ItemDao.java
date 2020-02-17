@@ -18,16 +18,22 @@ public class ItemDao {
 
     public List<ItemEntity> getItemsByCategoryAndRestaurant(String RestaurantUuid, String CategoryUuid) {
         try {
-            return null;
+            return null; // TODO: Implement this
         } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
             return null;
         }
     }
 
     public List<ItemEntity> getItemsByPopularity(String RestaurantUuid) {
         try {
-            return null;
+            return null; //TODO: implement this
         } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
             return null;
         }
     }
