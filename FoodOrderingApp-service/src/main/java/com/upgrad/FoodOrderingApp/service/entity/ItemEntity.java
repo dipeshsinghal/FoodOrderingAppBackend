@@ -14,6 +14,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "item", schema = "public")
+@NamedQueries({
+        @NamedQuery(name = "getItemsByUuid", query = "select i from ItemEntity i where i.uuid =:uuid")
+})
 public class ItemEntity implements Serializable {
     @Id
     @Column(name = "id")

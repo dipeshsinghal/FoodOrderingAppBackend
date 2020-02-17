@@ -15,7 +15,8 @@ public class ItemService {
     private ItemDao itemDao;
 
     public ItemEntity getItemsByUuid(String uuid) {
-        return null;
+        return itemDao.getItemsByUuid(uuid);
+
     }
 
     public List<ItemEntity> getItemsByPopularity(RestaurantEntity restaurantEntity) {

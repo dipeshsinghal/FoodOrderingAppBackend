@@ -156,6 +156,14 @@ public class OrderEntity implements Serializable {
         this.restaurant = restaurant;
     }
 
+    public List<OrderItemEntity> getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(List<OrderItemEntity> orderItem) {
+        this.orderItem = orderItem;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return new EqualsBuilder().append(this, obj).isEquals();

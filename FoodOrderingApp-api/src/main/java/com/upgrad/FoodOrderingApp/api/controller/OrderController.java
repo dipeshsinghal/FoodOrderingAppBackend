@@ -145,9 +145,7 @@ public class OrderController {
 
         List<ItemQuantity> listItemQuantity = saveOrderRequest.getItemQuantities();
 
-        for(ItemQuantity itemQuantity: listItemQuantity ) {
-            ItemEntity itemEntity = itemService.getItemsByUuid(itemQuantity.getItemId().toString());
-        }
+        List<OrderItemEntity> listOrderItemEntity = new ArrayList<>();
 
         OrderEntity orderEntity = new OrderEntity();
 
@@ -158,8 +156,22 @@ public class OrderController {
         orderEntity.setRestaurant(restaurantEntity);
         orderEntity.setBill(saveOrderRequest.getBill().doubleValue());
         orderEntity.setDiscount(saveOrderRequest.getDiscount().doubleValue());
+        //orderEntity.setOrderItem(listOrderItemEntity);
 
         OrderEntity savedOrderEntity = orderService.saveOrder(orderEntity);
+
+        for(ItemQuantity itemQuantity: listItemQuantity ) {
+            OrderItemEntity orderItemEntity = new OrderItemEntity();
+            orderItemEntity.setItem(itemService.getItemsByUuid(itemQuantity.getItemId().toString()));
+            orderItemEntity.setPrice(itemQuantity.getPrice());
+            orderItemEntity.setQuantity(itemQuantity.getQuantity());
+            orderItemEntity.setOrder(orderEntity);
+            listOrderItemEntity.add(orderItemEntity);
+
+            OrderItemEntity savedOrderItemEntity = orderService.saveOrderItem(orderItemEntity);
+        }
+
+
 
         SaveOrderResponse saveOrderResponse = new SaveOrderResponse().id(savedOrderEntity.getUuid()).status("ORDER SUCCESSFULLY PLACED");
 

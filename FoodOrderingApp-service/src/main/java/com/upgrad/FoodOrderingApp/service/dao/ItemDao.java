@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.service.dao;
 
 import com.upgrad.FoodOrderingApp.service.entity.CouponEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import org.springframework.stereotype.Repository;
 
@@ -30,4 +31,16 @@ public class ItemDao {
             return null;
         }
     }
+    public ItemEntity getItemsByUuid(String uuid) {
+        try {
+            return entityManager.createNamedQuery("getItemsByUuid", ItemEntity.class).setParameter("uuod",uuid).getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            return null;
+        }
+    }
 }
+
+
