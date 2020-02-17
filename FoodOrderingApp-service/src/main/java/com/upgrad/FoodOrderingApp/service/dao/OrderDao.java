@@ -19,12 +19,20 @@ public class OrderDao {
             return entityManager.createNamedQuery("getCouponByCouponUuid", CouponEntity.class).setParameter("uuid", uuid).getSingleResult();
         } catch (NoResultException nre) {
             return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            e.printStackTrace();
+            return null;
         }
     }
     public CouponEntity getCouponByCouponName(String couponName) {
         try {
             return entityManager.createNamedQuery("getCouponByCouponName", CouponEntity.class).setParameter("couponName", couponName).getSingleResult();
         } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }
@@ -37,6 +45,7 @@ public class OrderDao {
             return null;
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }
@@ -46,6 +55,7 @@ public class OrderDao {
             entityManager.persist(orderEntity);
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
         }
         return orderEntity;
     }
@@ -55,6 +65,7 @@ public class OrderDao {
             entityManager.persist(orderItemEntity);
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
         }
         return orderItemEntity;
     }

@@ -21,6 +21,7 @@ public class StateDao {
             return null;
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }
@@ -32,6 +33,7 @@ public class StateDao {
             return null;
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }

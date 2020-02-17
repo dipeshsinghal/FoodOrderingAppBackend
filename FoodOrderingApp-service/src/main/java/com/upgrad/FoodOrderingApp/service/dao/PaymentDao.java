@@ -22,6 +22,7 @@ public class PaymentDao {
             return null;
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }
@@ -33,6 +34,7 @@ public class PaymentDao {
             return null;
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }

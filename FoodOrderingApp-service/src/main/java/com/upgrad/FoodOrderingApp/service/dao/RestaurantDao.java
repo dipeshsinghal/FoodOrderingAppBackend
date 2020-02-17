@@ -21,6 +21,7 @@ public class RestaurantDao {
             return null;
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }
@@ -30,6 +31,7 @@ public class RestaurantDao {
             entityManager.merge(updateRestaurantEntity);
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
         }
         return updateRestaurantEntity;
     }
@@ -41,6 +43,7 @@ public class RestaurantDao {
             return null;
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }
@@ -51,6 +54,7 @@ public class RestaurantDao {
             return null;
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }

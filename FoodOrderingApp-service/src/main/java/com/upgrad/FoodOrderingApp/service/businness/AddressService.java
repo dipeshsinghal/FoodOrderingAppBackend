@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AddressService {
@@ -65,8 +67,14 @@ public class AddressService {
     }
 
     public List<AddressEntity> getAllAddress(CustomerEntity customerEntity) {
-        //TODO: Implement if required
-        return null;
+
+        List<CustomerAddressEntity> listCustomerAddressEntity = addressDao.getAllCustomerAddress(customerEntity.getUuid());
+        List<AddressEntity> listAddressEntity = new ArrayList<>();
+        for (CustomerAddressEntity ca: listCustomerAddressEntity) {
+            listAddressEntity.add(ca.getAddress());
+        }
+
+        return listAddressEntity;
     }
 
     public List<StateEntity> getAllStates() {

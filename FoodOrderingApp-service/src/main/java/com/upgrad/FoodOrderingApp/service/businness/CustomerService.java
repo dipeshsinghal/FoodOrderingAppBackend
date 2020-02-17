@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Service
 public class CustomerService {
@@ -124,6 +125,7 @@ public class CustomerService {
         customerAuthEntity.setAccessToken(jwtTokenProvider.generateToken(customerEntity.getUuid(), now, expiresAt));
         customerAuthEntity.setLoginAt(now);
         customerAuthEntity.setExpiresAt(expiresAt);
+        customerAuthEntity.setUuid(UUID.randomUUID().toString());
 
         customerAuthDao.createAuthToken(customerAuthEntity);
 

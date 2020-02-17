@@ -18,6 +18,7 @@ public class CustomerDao {
             entityManager.persist(customerEntity);
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
         }
         return customerEntity;
     }
@@ -29,6 +30,7 @@ public class CustomerDao {
             return null;
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }

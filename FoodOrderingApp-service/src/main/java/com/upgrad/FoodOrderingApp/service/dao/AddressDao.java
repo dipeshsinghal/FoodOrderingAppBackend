@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class AddressDao {
@@ -21,6 +22,19 @@ public class AddressDao {
             return null;
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<CustomerAddressEntity> getAllCustomerAddress(String customerUuid){
+        try {
+            return entityManager.createNamedQuery("getAllCustomerAddress", CustomerAddressEntity.class).setParameter("customerUuid",customerUuid).getResultList();
+        } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            e.printStackTrace();
             return null;
         }
     }
@@ -30,6 +44,7 @@ public class AddressDao {
             entityManager.persist(addressEntity);
         } catch (Exception e) {
             System.out.println(".....................Database Error");
+            e.printStackTrace();
         }
         return addressEntity;
 
