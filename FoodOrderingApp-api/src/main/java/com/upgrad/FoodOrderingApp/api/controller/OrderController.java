@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,19 +79,42 @@ public class OrderController {
 
         List<OrderEntity> listOrderEntity = orderService.getOrdersByCustomers(customerEntity.getUuid());
 
+        OrderListCustomer orderListCustomer = new OrderListCustomer()
+                .id(UUID.fromString(customerEntity.getUuid()))
+                .firstName(customerEntity.getFirstName())
+                .lastName(customerEntity.getLastName())
+                .contactNumber(customerEntity.getContactNumber())
+                .emailAddress(customerEntity.getEmail());
+
+
         List<OrderList> listOrderList = new ArrayList<>();
         for(OrderEntity orderEntity: listOrderEntity){
-            listOrderList.add(new OrderList()
+
+             listOrderList.add(new OrderList()
                     .id(UUID.fromString(orderEntity.getUuid()))
                     .date(orderEntity.getTimestamp().toString())
                     .bill(BigDecimal.valueOf(orderEntity.getBill()))
                     .discount(BigDecimal.valueOf(orderEntity.getDiscount()))
-                    .customer(null)
-                    .payment(null)
-                    .address(null)
-                    .coupon(null)
-                    .itemQuantities(new ArrayList<>()));
+                    .customer(orderListCustomer)
+                    .payment(new OrderListPayment()
+                            .id(UUID.fromString(orderEntity.getPayment().getUuid()))
+                            .paymentName(orderEntity.getPayment().getPaymentName()))
+                    .address(new OrderListAddress()
+                            .id(UUID.fromString(orderEntity.getAddress().getUuid()))
+                            .flatBuildingName(orderEntity.getAddress().getFlatBuilNo())
+                            .locality(orderEntity.getAddress().getLocality())
+                            .city(orderEntity.getAddress().getCity())
+                            .pincode(orderEntity.getAddress().getPincode())
+                            .state(new OrderListAddressState()
+                                    .id(UUID.fromString(orderEntity.getAddress().getState().getUuid()))
+                                    .stateName(orderEntity.getAddress().getState().getStateName())))
+                    .coupon(new OrderListCoupon()
+                            .id(UUID.fromString(orderEntity.getCoupon().getUuid()))
+                            .couponName(orderEntity.getCoupon().getCouponName())
+                            .percent(orderEntity.getCoupon().getPercent()))
+                    .itemQuantities(new ArrayList<>())); //TODO: add item quantities
         }
+
         CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse().orders(listOrderList);
 
         return new ResponseEntity<>(customerOrderResponse,HttpStatus.OK);
