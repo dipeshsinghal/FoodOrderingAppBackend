@@ -2,6 +2,8 @@ package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.RestaurantDao;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
+import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
+import com.upgrad.FoodOrderingApp.service.exception.InvalidRatingException;
 import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,7 @@ public class RestaurantService {
         return listRestaurantEntity;
     }
 
-    public List<RestaurantEntity> restaurantByCategory(String categoryId) {
+    public List<RestaurantEntity> restaurantByCategory(String categoryId) throws CategoryNotFoundException {
         return null;
     }
 
@@ -42,8 +44,15 @@ public class RestaurantService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public RestaurantEntity updateRestaurantRating(RestaurantEntity restaurantEntity, Double rating) {
-        return null;
+    public RestaurantEntity updateRestaurantRating(RestaurantEntity restaurantEntity, Double customerRating) throws InvalidRatingException {
+
+        if( customerRating == null || customerRating < 1.0 || customerRating > 5.0 ) {
+            throw new InvalidRatingException("IRE-001","Restaurant should be in the range of 1 to 5");
+        }
+
+        restaurantEntity.setCustomerRating(customerRating);
+
+        return restaurantDao.updateRestaurant(restaurantEntity);
     }
 
 }

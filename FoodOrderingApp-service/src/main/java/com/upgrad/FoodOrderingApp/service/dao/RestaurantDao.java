@@ -14,6 +14,15 @@ public class RestaurantDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    public RestaurantEntity updateRestaurant(final RestaurantEntity updateRestaurantEntity) {
+        try {
+            entityManager.merge(updateRestaurantEntity);
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+        }
+        return updateRestaurantEntity;
+    }
+
     public RestaurantEntity restaurantByUUID(String uuid) {
         try {
             return entityManager.createNamedQuery("getRestaurantByUUID", RestaurantEntity.class).setParameter("uuid", uuid).getSingleResult();

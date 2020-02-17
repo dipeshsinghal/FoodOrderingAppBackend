@@ -26,6 +26,11 @@ public class CategoryService {
     }
 
     public CategoryEntity getCategoryById(String categoryId) throws CategoryNotFoundException {
+
+        if(categoryId == null || categoryId.isEmpty()) {
+            throw new CategoryNotFoundException("CNF-001","Category id field should not be empty");
+        }
+
         CategoryEntity categoryEntity = categoryDao.getCategoryById(categoryId);
         if(categoryEntity == null) {
             throw new CategoryNotFoundException("CNF-002","No category by this id");

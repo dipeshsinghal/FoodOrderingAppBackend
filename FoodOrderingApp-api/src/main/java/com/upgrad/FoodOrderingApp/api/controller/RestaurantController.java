@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,10 +91,6 @@ public class RestaurantController {
             @PathVariable("category_id") final String categoryId)
             throws CategoryNotFoundException {
 
-        if(categoryId == null || categoryId.isEmpty()) {
-            throw new CategoryNotFoundException("CNF-001","Category id field should not be empty");
-        }
-
         CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
 
         List<RestaurantEntity> listRestaurantEntity = restaurantService.restaurantByCategory(categoryId);
@@ -146,15 +143,16 @@ public class RestaurantController {
         return new ResponseEntity<RestaurantDetailsResponse>(restaurantDetailsResponse, HttpStatus.OK);
     }
 
-    @RequestMapping(
-            method = RequestMethod.PUT,
-            path = "/restaurant/{restaurant_id}",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    @RequestMapping(
+//            method = RequestMethod.PUT,
+//            path = "/restaurant/{restaurant_id}",
+//            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+//            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping("/restaurant/{restaurant_id}")
     public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(
             @RequestHeader("authorization") final String authorization,
             @PathVariable("restaurant_id") final String restaurantId,
-            @RequestBody(required = false) Double customerRating)
+            @RequestParam(name="customer_rating", required = true) Double customerRating)
             throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
         // Call authenticationService with access token came in authorization field.
@@ -166,12 +164,10 @@ public class RestaurantController {
 
         RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurantId);
 
-        if( customerRating == null || customerRating < 1.0 || customerRating > 5.0 ) {
-            throw new InvalidRatingException("IRE-001","Restaurant should be in the range of 1 to 5");
-        }
+        RestaurantEntity updatedRestaurantEntity = restaurantService.updateRestaurantRating(restaurantEntity, customerRating);
 
         RestaurantUpdatedResponse restaurantUpdatedResponse = new RestaurantUpdatedResponse()
-                .id(UUID.fromString(restaurantEntity.getUuid())).status("RESTAURANT RATING UPDATED SUCCESSFULLY");
+                .id(UUID.fromString(restaurantId)).status("RESTAURANT RATING UPDATED SUCCESSFULLY");
 
         return new ResponseEntity<RestaurantUpdatedResponse>(restaurantUpdatedResponse, HttpStatus.OK);
     }
