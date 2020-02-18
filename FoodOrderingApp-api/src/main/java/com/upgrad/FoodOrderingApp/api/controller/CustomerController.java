@@ -156,10 +156,21 @@ public class CustomerController {
         // Call authenticationService with access token came in authorization field.
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        customerService.updateCustomer(customerEntity);
+        customerEntity.setFirstName(updateCustomerRequest.getFirstName());
+
+        if( updateCustomerRequest.getLastName() != null &&
+                !updateCustomerRequest.getLastName().isEmpty()) {
+            customerEntity.setLastName(updateCustomerRequest.getLastName());
+        }
+
+        CustomerEntity updatedcustomerEntity = customerService.updateCustomer(customerEntity);
 
         //create response with create customer uuid
-        UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse().id(customerEntity.getUuid()).status("CUSTOMER DETAILS UPDATED SUCCESSFULLY");
+        UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse()
+                .id(updatedcustomerEntity.getUuid())
+                .firstName(updatedcustomerEntity.getFirstName())
+                .lastName(updatedcustomerEntity.getLastName())
+                .status("CUSTOMER DETAILS UPDATED SUCCESSFULLY");
 
         return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse, HttpStatus.OK);
     }

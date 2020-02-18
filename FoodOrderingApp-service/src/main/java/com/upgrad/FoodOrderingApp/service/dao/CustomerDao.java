@@ -37,7 +37,7 @@ public class CustomerDao {
 
     public CustomerEntity updateCustomer(final CustomerEntity updateCustomerEntity) {
         try {
-            entityManager.merge(updateCustomerEntity);
+             entityManager.merge(updateCustomerEntity);
         } catch (Exception e) {
             System.out.println(".....................Database Error");
         }

@@ -169,7 +169,8 @@ public class CustomerService {
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity updateCustomerPassword(String oldPassword, String newPassword, CustomerEntity customerEntity) throws UpdateCustomerException {
 
-        if (!isPasswordStrong(customerEntity.getPassword())) {
+
+        if (!isPasswordStrong(newPassword)) {
             throw new UpdateCustomerException("UCR-001", "Weak password!");
         }
 
