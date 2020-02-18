@@ -2,7 +2,9 @@ package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
+import com.upgrad.FoodOrderingApp.service.businness.ItemService;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CategoryItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ItemService itemService;
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -65,12 +70,12 @@ public class CategoryController {
         CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
 
         List<ItemList> listItemList = new ArrayList<ItemList>();
-        for(ItemEntity itemEntity :categoryEntity.getItems()){
+        for(ItemEntity i : categoryEntity.getItems()){
             listItemList.add(new ItemList()
-                    .id(UUID.fromString(itemEntity.getUuid()))
-                    .itemType(ItemList.ItemTypeEnum.fromValue(itemEntity.getType().toString()))
-                    .itemName(itemEntity.getItemName())
-                    .price(itemEntity.getPrice()));
+                    .id(UUID.fromString(i.getUuid()))
+                    .itemType(ItemList.ItemTypeEnum.fromValue(i.getType().toString()))
+                    .itemName(i.getItemName())
+                    .price(i.getPrice()));
         }
 
         CategoryDetailsResponse categoryDetailsResponse = new CategoryDetailsResponse()
