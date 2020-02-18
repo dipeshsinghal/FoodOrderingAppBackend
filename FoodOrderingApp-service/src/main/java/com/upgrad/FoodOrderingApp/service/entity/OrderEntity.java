@@ -36,24 +36,29 @@ public class OrderEntity implements Serializable {
     @NotNull
     private Double discount=0.0;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "coupon_id")
     private CouponEntity coupon;
 
-    @Column(name = "timestamp")
+    @Column(name = "date")
     @NotNull
     private Date timestamp;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "payment_id")
     private PaymentEntity payment;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     @NotNull
     private CustomerEntity customer;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     @NotNull
     private AddressEntity address;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id")
     @NotNull
     private RestaurantEntity restaurant;

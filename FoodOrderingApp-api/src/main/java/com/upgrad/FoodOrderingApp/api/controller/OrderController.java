@@ -12,11 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/")
@@ -149,6 +147,7 @@ public class OrderController {
 
         OrderEntity orderEntity = new OrderEntity();
 
+        orderEntity.setUuid(UUID.randomUUID().toString());
         orderEntity.setCustomer(customerEntity);
         orderEntity.setCoupon(couponEntity);
         orderEntity.setAddress(addressEntity);
@@ -157,6 +156,10 @@ public class OrderController {
         orderEntity.setBill(saveOrderRequest.getBill().doubleValue());
         orderEntity.setDiscount(saveOrderRequest.getDiscount().doubleValue());
         //orderEntity.setOrderItem(listOrderItemEntity);
+        orderEntity.setTimestamp(new Date());
+        orderEntity.setOrderItem(null);
+
+
 
         OrderEntity savedOrderEntity = orderService.saveOrder(orderEntity);
 
