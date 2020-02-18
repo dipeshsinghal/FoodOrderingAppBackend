@@ -38,7 +38,6 @@ public class RestaurantService {
     }
 
     public List<RestaurantEntity> restaurantByCategory(String categoryId) throws CategoryNotFoundException {
-        //TODO: Implement this
         if(categoryId == null || categoryId.isEmpty()){
             throw new CategoryNotFoundException("CNF-001", "Category id field should not be empty");
         }
