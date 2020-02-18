@@ -57,8 +57,8 @@ public class RestaurantController {
             restaurantList.add(new RestaurantList().id(UUID.fromString(restaurantEntity.getUuid()))
                     .restaurantName(restaurantEntity.getRestaurantName())
                     .averagePrice(restaurantEntity.getAvgPrice())
-                    .categories(listCategoryEntity.toString())
-                    .address(getRestaurantDetailsResponseAddress(restaurantEntity))
+                    //.categories(listCategoryEntity.toString()) //TODO: Fix problem here
+                    //.address(getRestaurantDetailsResponseAddress(restaurantEntity)) //TODO: Fix problem here
                     .customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
                     .numberCustomersRated(restaurantEntity.getNumberCustomersRated())
                     .photoURL(restaurantEntity.getPhotoUrl()));
