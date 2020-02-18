@@ -157,7 +157,7 @@ public class CustomerService {
         CustomerAuthEntity customerAuthEntity = getCustomerAuth(accessToken);
 
         customerAuthEntity.setLogoutAt(ZonedDateTime.now());
-        
+
         return customerAuthDao.updateAuthToken(customerAuthEntity);
     }
 

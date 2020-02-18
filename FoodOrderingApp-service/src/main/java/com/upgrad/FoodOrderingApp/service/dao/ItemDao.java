@@ -20,7 +20,7 @@ public class ItemDao {
 
     public List<ItemEntity> getItemsByCategoryAndRestaurant(String RestaurantUuid, String CategoryUuid) {
         try {
-            return null; // TODO: Implement this
+            return new ArrayList<>(); // TODO: Implement this
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {
