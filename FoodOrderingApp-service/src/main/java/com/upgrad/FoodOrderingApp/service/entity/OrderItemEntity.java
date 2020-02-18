@@ -3,13 +3,21 @@ package com.upgrad.FoodOrderingApp.service.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.data.repository.query.Param;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "order_item", schema = "public")
+@NamedQueries({
+        @NamedQuery(name = "getOrderItemsByRestaurant", query = "select oi from OrderItemEntity oi where oi.order.restaurant.uuid =:uuid Order by oi.quantity desc"),
+//        @NamedQuery(name = "getItemsByPopularity", query = "select oi.item.uuid, count(oi.item) as total" + //,
+//                " from OrderEntity o, OrderItemEntity oi where o.id = oi.order.id" +
+//                " and o.restaurant.uuid =:uuid group by o.restaurant.uuid, oi.item.uuid order by total desc") //
+})
 public class OrderItemEntity implements Serializable {
     @Id
     @Column(name = "id")
