@@ -106,7 +106,13 @@ public class CustomerController {
 
 
         //send response with customer uuid and access token in HttpHeader
-        LoginResponse loginResponse = new LoginResponse().id(customerAuthEntity.getCustomer().getUuid()).message("SIGNED IN SUCCESSFULLY");
+        LoginResponse loginResponse = new LoginResponse()
+                                            .id(customerAuthEntity.getCustomer().getUuid())
+                                            .firstName(customerAuthEntity.getCustomer().getFirstName())
+                                            .lastName(customerAuthEntity.getCustomer().getLastName())
+                                            .contactNumber(customerAuthEntity.getCustomer().getContactNumber())
+                                            .emailAddress(customerAuthEntity.getCustomer().getEmail())
+                                            .message("SIGNED IN SUCCESSFULLY");
         HttpHeaders headers = new HttpHeaders();
         headers.add("access-token", customerAuthEntity.getAccessToken());
 
