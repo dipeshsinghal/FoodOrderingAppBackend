@@ -57,8 +57,8 @@ public class RestaurantController {
             restaurantList.add(new RestaurantList().id(UUID.fromString(restaurantEntity.getUuid()))
                     .restaurantName(restaurantEntity.getRestaurantName())
                     .averagePrice(restaurantEntity.getAvgPrice())
-                    //.categories(listCategoryEntity.toString()) //TODO: Fix problem here
-                    //.address(getRestaurantDetailsResponseAddress(restaurantEntity)) //TODO: Fix problem here
+                    //.categories(listCategoryEntity.toString()) //Fixme: fix this
+                    //.address(getRestaurantDetailsResponseAddress(restaurantEntity)) //Fixme: fix this
                     .customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
                     .numberCustomersRated(restaurantEntity.getNumberCustomersRated())
                     .photoURL(restaurantEntity.getPhotoUrl()));
@@ -89,8 +89,8 @@ public class RestaurantController {
             restaurantList.add(new RestaurantList().id(UUID.fromString(restaurantEntity.getUuid()))
                     .restaurantName(restaurantEntity.getRestaurantName())
                     .averagePrice(restaurantEntity.getAvgPrice())
-                    .categories(listCategoryEntity.toString())
-                    .address(getRestaurantDetailsResponseAddress(restaurantEntity))
+                    //.categories(listCategoryEntity.toString()) //Fixme: fix this
+                    //.address(getRestaurantDetailsResponseAddress(restaurantEntity)) //Fixme: fix this
                     .customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
                     .numberCustomersRated(restaurantEntity.getNumberCustomersRated())
                     .photoURL(restaurantEntity.getPhotoUrl()));
@@ -131,7 +131,7 @@ public class RestaurantController {
                             .state(new RestaurantDetailsResponseAddressState()
                                     .id(UUID.fromString(r.getAddress().getState().getUuid()))
                                     .stateName(r.getAddress().getState().getStateName())))
-                    .categories(categoryService.getCategoriesByRestaurant(r.getUuid()).toString())
+                    //.categories(categoryService.getCategoriesByRestaurant(r.getUuid()).toString()) //Fixme: fix this
                     .averagePrice(r.getAvgPrice()));
         }
 

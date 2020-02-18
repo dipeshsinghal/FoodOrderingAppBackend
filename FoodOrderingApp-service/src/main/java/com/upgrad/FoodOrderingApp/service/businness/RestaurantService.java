@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.RestaurantDao;
+import com.upgrad.FoodOrderingApp.service.entity.RestaurantCategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.InvalidRatingException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,7 +39,16 @@ public class RestaurantService {
 
     public List<RestaurantEntity> restaurantByCategory(String categoryId) throws CategoryNotFoundException {
         //TODO: Implement this
-        return null;
+        if(categoryId == null || categoryId.isEmpty()){
+            throw new CategoryNotFoundException("CNF-001", "Category id field should not be empty");
+        }
+
+        List<RestaurantCategoryEntity> listRestaurantCategoryEntity = restaurantDao.restaurantByCategory(categoryId);
+        List<RestaurantEntity> listRestaurantEntity = new ArrayList<>();
+        for(RestaurantCategoryEntity rc: listRestaurantCategoryEntity){
+            listRestaurantEntity.add(rc.getRestaurant());
+        }
+        return listRestaurantEntity;
     }
 
     public List<RestaurantEntity> restaurantsByRating() {
