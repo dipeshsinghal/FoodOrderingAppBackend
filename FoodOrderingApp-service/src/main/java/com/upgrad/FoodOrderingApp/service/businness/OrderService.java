@@ -50,6 +50,14 @@ public class OrderService {
         }
     }
 
+    public List<OrderItemEntity> getOrderItems(String orderUuid) {
+        try {
+            return orderDao.getOrderItems(orderUuid);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public List<OrderEntity> getOrdersByCustomers(String uuid) {
         return orderDao.getOrdersByCustomers(uuid);
     }

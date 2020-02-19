@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name = "order_item", schema = "public")
 @NamedQueries({
         @NamedQuery(name = "getOrderItemsByRestaurant", query = "select oi from OrderItemEntity oi where oi.order.restaurant.uuid =:uuid Order by oi.quantity desc"),
+        @NamedQuery(name = "getOrderItems", query = "select oi from OrderItemEntity oi where oi.order.uuid =:uuid")
 //        @NamedQuery(name = "getItemsByPopularity", query = "select oi.item.uuid, count(oi.item) as total" + //,
 //                " from OrderEntity o, OrderItemEntity oi where o.id = oi.order.id" +
 //                " and o.restaurant.uuid =:uuid group by o.restaurant.uuid, oi.item.uuid order by total desc") //

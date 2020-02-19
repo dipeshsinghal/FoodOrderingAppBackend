@@ -87,7 +87,20 @@ public class OrderController {
 
         List<OrderList> listOrderList = new ArrayList<>();
         for(OrderEntity orderEntity: listOrderEntity){
+             List<OrderItemEntity> listOrderItemEntity = orderService.getOrderItems(orderEntity.getUuid());
+             List<ItemQuantityResponse> listItemQuantityResponse = new ArrayList<>();
+             for(OrderItemEntity oi :listOrderItemEntity) {
+                 listItemQuantityResponse.add(new ItemQuantityResponse()
+                                                    .price(oi.getPrice())
+                                                    .quantity(oi.getQuantity())
+                                                    .item(new ItemQuantityResponseItem()
+                                                            .id(UUID.fromString(oi.getItem().getUuid()))
+                                                            .itemName(oi.getItem().getItemName())
+                                                            .itemPrice(oi.getItem().getPrice())
+                                                            .type(ItemQuantityResponseItem.TypeEnum.fromValue(oi.getItem().getType().toString()))));
 
+
+             }
              listOrderList.add(new OrderList()
                     .id(UUID.fromString(orderEntity.getUuid()))
                     .date(orderEntity.getTimestamp().toString())
@@ -110,7 +123,7 @@ public class OrderController {
                             .id(UUID.fromString(orderEntity.getCoupon().getUuid()))
                             .couponName(orderEntity.getCoupon().getCouponName())
                             .percent(orderEntity.getCoupon().getPercent()))
-                    .itemQuantities(new ArrayList<>())); //TODO: add item quantities
+                    .itemQuantities(listItemQuantityResponse)); //TODO: add item quantities
         }
 
         CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse().orders(listOrderList);

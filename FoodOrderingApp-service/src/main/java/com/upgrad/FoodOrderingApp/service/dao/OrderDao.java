@@ -69,4 +69,18 @@ public class OrderDao {
         }
         return orderItemEntity;
     }
+
+    public List<OrderItemEntity> getOrderItems(String orderUuid) {
+        try {
+            return entityManager.createNamedQuery("getOrderItems", OrderItemEntity.class).setParameter("uuid", orderUuid).getResultList();
+        } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            System.out.println(".....................Database Error");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }
