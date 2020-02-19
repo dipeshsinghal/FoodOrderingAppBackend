@@ -123,7 +123,7 @@ public class OrderController {
                             .id(UUID.fromString(orderEntity.getCoupon().getUuid()))
                             .couponName(orderEntity.getCoupon().getCouponName())
                             .percent(orderEntity.getCoupon().getPercent()))
-                    .itemQuantities(listItemQuantityResponse)); //TODO: add item quantities
+                    .itemQuantities(listItemQuantityResponse));
         }
 
         CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse().orders(listOrderList);
