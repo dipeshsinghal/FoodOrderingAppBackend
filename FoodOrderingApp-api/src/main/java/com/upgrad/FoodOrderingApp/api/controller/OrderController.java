@@ -168,7 +168,7 @@ public class OrderController {
         orderEntity.setRestaurant(restaurantEntity);
         orderEntity.setBill(saveOrderRequest.getBill().doubleValue());
         orderEntity.setDiscount(saveOrderRequest.getDiscount().doubleValue());
-        //orderEntity.setOrderItem(listOrderItemEntity);
+
         orderEntity.setTimestamp(new Date());
         orderEntity.setOrderItem(null);
 
