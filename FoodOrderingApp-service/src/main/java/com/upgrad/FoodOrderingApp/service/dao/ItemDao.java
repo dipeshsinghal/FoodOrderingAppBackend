@@ -20,7 +20,8 @@ public class ItemDao {
 
     public List<ItemEntity> getItemsByCategoryAndRestaurant(String RestaurantUuid, String CategoryUuid) {
         try {
-            return new ArrayList<>(); // TODO: Implement this to get item list in GET /restaurant/{restaurant_id}
+            return entityManager.createNamedQuery("getItemsByCategoryAndRestaurant", ItemEntity.class).setParameter("categoryId",CategoryUuid).setParameter("restaurantId", RestaurantUuid).getResultList();
+            //return new ArrayList<>(); // TODO: Implement this to get item list in GET /restaurant/{restaurant_id}
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {
