@@ -78,6 +78,15 @@ public class CategoryController {
                     .price(i.getPrice()));
         }
 
+          //Disabling this code because Unit test are written differently
+//        for(CategoryItemEntity ci : categoryEntity.getCategoryItem()){
+//            listItemList.add(new ItemList()
+//                    .id(UUID.fromString(ci.getItem().getUuid()))
+//                    .itemType(ItemList.ItemTypeEnum.fromValue(ci.getItem().getType().toString()))
+//                    .itemName(ci.getItem().getItemName())
+//                    .price(ci.getItem().getPrice()));
+//        }
+
         CategoryDetailsResponse categoryDetailsResponse = new CategoryDetailsResponse()
                 .id(UUID.fromString(categoryEntity.getUuid()))
                 .categoryName(categoryEntity.getCategoryName())

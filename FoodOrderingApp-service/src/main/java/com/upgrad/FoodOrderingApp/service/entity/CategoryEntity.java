@@ -34,7 +34,7 @@ public class CategoryEntity implements Serializable {
     private String categoryName;
 
     @Transient
-    private List<ItemEntity> items;
+    private List<ItemEntity> items = new ArrayList<>();
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<CategoryItemEntity> categoryItem = new ArrayList<>();
@@ -72,6 +72,22 @@ public class CategoryEntity implements Serializable {
 
     public void setItems(List<ItemEntity> items) {
         this.items = items;
+    }
+
+    public List<CategoryItemEntity> getCategoryItem() {
+        return categoryItem;
+    }
+
+    public void setCategoryItem(List<CategoryItemEntity> categoryItem) {
+        this.categoryItem = categoryItem;
+    }
+
+    public List<RestaurantCategoryEntity> getRestaurantCategory() {
+        return restaurantCategory;
+    }
+
+    public void setRestaurantCategory(List<RestaurantCategoryEntity> restaurantCategory) {
+        this.restaurantCategory = restaurantCategory;
     }
 
     @Override

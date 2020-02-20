@@ -40,12 +40,17 @@ public class CategoryService {
         }
 
         List<CategoryItemEntity> listCategoryItemEntity = categoryDao.getCategoryItemEntityByCategoryUuid(categoryId);
+        //Disabling this code because Unit test are written differently
+        //categoryEntity.setCategoryItem(listCategoryItemEntity);
 
+        // { TODO: Remove This code if Test CategoryControllerTest.java:shouldGetCategoryById() is fixed
         List<ItemEntity> listItemEntity = new ArrayList<>();
-        for(CategoryItemEntity ci : listCategoryItemEntity){
+        for(CategoryItemEntity ci :listCategoryItemEntity) {
             listItemEntity.add(ci.getItem());
         }
         categoryEntity.setItems(listItemEntity);
+        // }
+
         return categoryEntity;
     }
 

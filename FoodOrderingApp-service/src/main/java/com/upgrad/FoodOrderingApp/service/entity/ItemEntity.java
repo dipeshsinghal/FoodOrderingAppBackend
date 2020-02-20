@@ -43,6 +43,10 @@ public class ItemEntity implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private ItemType type;
 
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "category_id")
+//    private CategoryEntity category;
+
     @OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<CategoryItemEntity> categoryItem = new ArrayList<>();
 
