@@ -17,7 +17,7 @@ public class RestaurantDao {
 
     public List<RestaurantEntity> restaurantsByRating() {
         try {
-            return entityManager.createNamedQuery("restaurantsByRating", RestaurantEntity.class).getResultList();
+            return entityManager.createNamedQuery("getRestaurantsByRating", RestaurantEntity.class).getResultList();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {

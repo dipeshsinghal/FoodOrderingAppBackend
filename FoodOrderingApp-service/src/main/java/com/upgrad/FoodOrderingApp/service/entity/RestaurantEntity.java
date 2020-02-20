@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "restaurant", schema = "public")
 @NamedQueries({
-        @NamedQuery(name = "restaurantsByRating", query = "select r from RestaurantEntity r order by customerRating"),
+        @NamedQuery(name = "getRestaurantsByRating", query = "select r from RestaurantEntity r order by customerRating desc"),
         @NamedQuery(name = "getRestaurantByUUID", query = "select r from RestaurantEntity r where r.uuid =:uuid"),
         @NamedQuery(name = "getRestaurantsByName", query = "select r from RestaurantEntity r where r.restaurantName like:restaurantName")
 })
