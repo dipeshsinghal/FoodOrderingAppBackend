@@ -67,26 +67,6 @@ public class RestaurantController {
 
         List<RestaurantList> listRestaurantList = getListRestaurantListFromListRestaurantEntity(listRestaurantEntity);
 
-//        List<RestaurantList> restaurantList = new ArrayList<>();
-//
-//        for(RestaurantEntity restaurantEntity: listRestaurantEntity) {
-//
-//            List<CategoryEntity> listCategoryEntity = categoryService.getCategoriesByRestaurant(restaurantEntity.getUuid());
-//            StringBuilder sbCategory = new StringBuilder();
-//            for(CategoryEntity c: listCategoryEntity){
-//                sbCategory.append(c.getCategoryName() + ", ");
-//            }
-//
-//            restaurantList.add(new RestaurantList().id(UUID.fromString(restaurantEntity.getUuid()))
-//                    .restaurantName(restaurantEntity.getRestaurantName())
-//                    .averagePrice(restaurantEntity.getAvgPrice())
-//                    .categories(sbCategory.substring(0,sbCategory.length() - 2))
-//                    .address(getRestaurantDetailsResponseAddress(restaurantEntity))
-//                    .customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
-//                    .numberCustomersRated(restaurantEntity.getNumberCustomersRated())
-//                    .photoURL(restaurantEntity.getPhotoUrl()));
-//        }
-
         //create response with create customer uuid
         RestaurantListResponse restaurantListResponse = new RestaurantListResponse().restaurants(listRestaurantList);
 
@@ -104,27 +84,7 @@ public class RestaurantController {
 
         List<RestaurantEntity> listRestaurantEntity = restaurantService.restaurantByCategory(categoryId);
 
-        List<RestaurantList> listRestaurantList = new ArrayList<>();
-
-        for(RestaurantEntity r :listRestaurantEntity) {
-            listRestaurantList.add(new RestaurantList()
-                    .id(UUID.fromString(r.getUuid()))
-                    .restaurantName(r.getRestaurantName())
-                    .photoURL(r.getPhotoUrl())
-                    .customerRating(BigDecimal.valueOf(r.getCustomerRating()))
-                    .numberCustomersRated(r.getNumberCustomersRated())
-                    .address(new RestaurantDetailsResponseAddress()
-                            .id(UUID.fromString(r.getAddress().getUuid()))
-                            .flatBuildingName(r.getAddress().getFlatBuilNo())
-                            .locality(r.getAddress().getLocality())
-                            .city(r.getAddress().getCity())
-                            .pincode(r.getAddress().getPincode())
-                            .state(new RestaurantDetailsResponseAddressState()
-                                    .id(UUID.fromString(r.getAddress().getState().getUuid()))
-                                    .stateName(r.getAddress().getState().getStateName())))
-                    .categories(categoryService.getCategoriesByRestaurant(r.getUuid()).toString()) //Fixme: fix this
-                    .averagePrice(r.getAvgPrice()));
-        }
+        List<RestaurantList> listRestaurantList = getListRestaurantListFromListRestaurantEntity(listRestaurantEntity);
 
         RestaurantListResponse restaurantListResponse = new RestaurantListResponse().restaurants(listRestaurantList);
 
@@ -146,7 +106,6 @@ public class RestaurantController {
 
         List<CategoryList> listCategoryList = getCategoryListByRestaurantId(restaurantId);
 
-        //create response with create customer uuid
         RestaurantDetailsResponse restaurantDetailsResponse = getRestaurantDetailsResponse(restaurantEntity, listCategoryList);
 
         return new ResponseEntity<RestaurantDetailsResponse>(restaurantDetailsResponse, HttpStatus.OK);
