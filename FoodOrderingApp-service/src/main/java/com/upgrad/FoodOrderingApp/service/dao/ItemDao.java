@@ -21,7 +21,6 @@ public class ItemDao {
     public List<ItemEntity> getItemsByCategoryAndRestaurant(String RestaurantUuid, String CategoryUuid) {
         try {
             return entityManager.createNamedQuery("getItemsByCategoryAndRestaurant", ItemEntity.class).setParameter("categoryId",CategoryUuid).setParameter("restaurantId", RestaurantUuid).getResultList();
-            //return new ArrayList<>(); // TODO: Implement this to get item list in GET /restaurant/{restaurant_id}
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {
@@ -31,15 +30,15 @@ public class ItemDao {
         }
     }
 
-    public List<OrderItemEntity> getItemsByPopularity(String restaurantUuid) {
+    public List<ItemEntity> getItemsByPopularity(String restaurantUuid) {
         try {
-            List<OrderItemEntity>  listOrderItemEntity = entityManager.createNamedQuery("getOrderItemsByRestaurant",OrderItemEntity.class).setParameter("uuid",restaurantUuid).getResultList();
-            List<OrderItemEntity>  subListOrderItemEntity = new ArrayList<>();
-            int listSize = listOrderItemEntity.size();
+            List<ItemEntity>  listItemEntity = entityManager.createNamedQuery("getItemsByPopularity", ItemEntity.class).setParameter("restaurantId",restaurantUuid).getResultList();
+            List<ItemEntity>  subListItemEntity = new ArrayList<>();
+            int listSize = listItemEntity.size();
             if(listSize > 0) {
-                subListOrderItemEntity.addAll(listOrderItemEntity.subList(0, Math.min(listSize - 1, 4)));
+                subListItemEntity.addAll(listItemEntity.subList(0, Math.min(listSize, 5)));
             }
-            return subListOrderItemEntity;
+            return subListItemEntity;
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {
