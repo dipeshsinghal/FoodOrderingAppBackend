@@ -61,7 +61,11 @@ public class RestaurantService {
             throw new InvalidRatingException("IRE-001","Restaurant should be in the range of 1 to 5");
         }
 
-        restaurantEntity.setCustomerRating(customerRating);
+        Double newcustomerRating = ( restaurantEntity.getCustomerRating() * restaurantEntity.getNumberCustomersRated() + customerRating )
+                            / (restaurantEntity.getNumberCustomersRated() + 1 );
+
+        restaurantEntity.setNumberCustomersRated(restaurantEntity.getNumberCustomersRated()+1);
+        restaurantEntity.setCustomerRating(newcustomerRating);
 
         return restaurantDao.updateRestaurant(restaurantEntity);
     }
