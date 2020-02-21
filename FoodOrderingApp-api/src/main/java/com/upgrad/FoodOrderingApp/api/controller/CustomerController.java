@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+@CrossOrigin(allowedHeaders="*", origins="*")
 @RestController
 @RequestMapping("/")
 public class CustomerController {

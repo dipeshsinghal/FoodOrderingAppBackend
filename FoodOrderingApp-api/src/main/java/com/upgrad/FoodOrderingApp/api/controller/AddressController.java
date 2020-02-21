@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin(allowedHeaders="*", origins="*")
 @RestController
 @RequestMapping("/")
 public class AddressController {
