@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +31,9 @@ public class ItemDao {
         }
     }
 
-    public List<ItemEntity> getItemsByPopularity(String restaurantUuid) {
+    public List<ItemEntity> getItemsByPopularity(Long restaurantId) {
         try {
-            List<ItemEntity>  listItemEntity = entityManager.createNamedQuery("getItemsByPopularity", ItemEntity.class).setParameter("restaurantId",restaurantUuid).getResultList();
+            List<ItemEntity> listItemEntity = entityManager.createNamedQuery("getItemsByPopularity2", ItemEntity.class).setParameter("restaurantId",restaurantId).getResultList();
             List<ItemEntity>  subListItemEntity = new ArrayList<>();
             int listSize = listItemEntity.size();
             if(listSize > 0) {
