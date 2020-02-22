@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
 
-@CrossOrigin(allowedHeaders="*", origins="*")
+@CrossOrigin(allowedHeaders="*", origins="*", exposedHeaders=("access-token"))
 @RestController
 @RequestMapping("/")
 public class OrderController {

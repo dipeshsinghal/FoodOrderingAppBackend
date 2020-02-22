@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(allowedHeaders="*", origins="*")
+@CrossOrigin(allowedHeaders="*", origins="*", exposedHeaders=("access-token"))
 @RestController
 @RequestMapping("/")
 public class RestaurantController {

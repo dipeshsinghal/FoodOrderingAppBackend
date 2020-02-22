@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-@CrossOrigin(allowedHeaders="*", origins="*")
+@CrossOrigin(allowedHeaders="*", origins="*", exposedHeaders=("access-token"))
 @ControllerAdvice
 public class RestExceptionHandler {
 
