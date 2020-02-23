@@ -12,11 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
-@CrossOrigin(allowedHeaders="*", origins="*", exposedHeaders=("access-token"))
+@CrossOrigin(allowedHeaders = "*", origins = "*", exposedHeaders = ("access-token"))
 @RestController
 @RequestMapping("/")
 public class OrderController {
@@ -51,8 +52,8 @@ public class OrderController {
         // Call authenticationService with access token came in authorization field.
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        if(couponName == null || couponName.isEmpty()) {
-            throw new CouponNotFoundException("CPF-002","Coupon name field should not be empty");
+        if (couponName == null || couponName.isEmpty()) {
+            throw new CouponNotFoundException("CPF-002", "Coupon name field should not be empty");
 
         }
         CouponEntity couponEntity = orderService.getCouponByCouponName(couponName);
@@ -87,22 +88,22 @@ public class OrderController {
 
 
         List<OrderList> listOrderList = new ArrayList<>();
-        for(OrderEntity orderEntity: listOrderEntity){
-             List<OrderItemEntity> listOrderItemEntity = orderService.getOrderItems(orderEntity.getUuid());
-             List<ItemQuantityResponse> listItemQuantityResponse = new ArrayList<>();
-             for(OrderItemEntity oi :listOrderItemEntity) {
-                 listItemQuantityResponse.add(new ItemQuantityResponse()
-                                                    .price(oi.getPrice())
-                                                    .quantity(oi.getQuantity())
-                                                    .item(new ItemQuantityResponseItem()
-                                                            .id(UUID.fromString(oi.getItem().getUuid()))
-                                                            .itemName(oi.getItem().getItemName())
-                                                            .itemPrice(oi.getItem().getPrice())
-                                                            .type(ItemQuantityResponseItem.TypeEnum.fromValue(oi.getItem().getType().toString()))));
+        for (OrderEntity orderEntity : listOrderEntity) {
+            List<OrderItemEntity> listOrderItemEntity = orderService.getOrderItems(orderEntity.getUuid());
+            List<ItemQuantityResponse> listItemQuantityResponse = new ArrayList<>();
+            for (OrderItemEntity oi : listOrderItemEntity) {
+                listItemQuantityResponse.add(new ItemQuantityResponse()
+                        .price(oi.getPrice())
+                        .quantity(oi.getQuantity())
+                        .item(new ItemQuantityResponseItem()
+                                .id(UUID.fromString(oi.getItem().getUuid()))
+                                .itemName(oi.getItem().getItemName())
+                                .itemPrice(oi.getItem().getPrice())
+                                .type(ItemQuantityResponseItem.TypeEnum.fromValue(oi.getItem().getType().toString()))));
 
 
-             }
-             listOrderList.add(new OrderList()
+            }
+            listOrderList.add(new OrderList()
                     .id(UUID.fromString(orderEntity.getUuid()))
                     .date(orderEntity.getTimestamp().toString())
                     .bill(BigDecimal.valueOf(orderEntity.getBill()))
@@ -129,7 +130,7 @@ public class OrderController {
 
         CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse().orders(listOrderList);
 
-        return new ResponseEntity<>(customerOrderResponse,HttpStatus.OK);
+        return new ResponseEntity<>(customerOrderResponse, HttpStatus.OK);
     }
 
     @RequestMapping(
@@ -174,10 +175,9 @@ public class OrderController {
         orderEntity.setOrderItem(null);
 
 
-
         OrderEntity savedOrderEntity = orderService.saveOrder(orderEntity);
 
-        for(ItemQuantity itemQuantity: listItemQuantity ) {
+        for (ItemQuantity itemQuantity : listItemQuantity) {
             OrderItemEntity orderItemEntity = new OrderItemEntity();
             orderItemEntity.setItem(itemService.getItemsByUuid(itemQuantity.getItemId().toString()));
             orderItemEntity.setPrice(itemQuantity.getPrice());

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(allowedHeaders="*", origins="*", exposedHeaders=("access-token"))
+@CrossOrigin(allowedHeaders = "*", origins = "*", exposedHeaders = ("access-token"))
 @RestController
 @RequestMapping("/")
 public class PaymentController {
@@ -34,10 +34,10 @@ public class PaymentController {
         List<PaymentEntity> listPaymentEntity = paymentService.getAllPaymentMethods();
 
         List<PaymentResponse> listPaymentResponse = new ArrayList<PaymentResponse>();
-        for (PaymentEntity paymentEntity: listPaymentEntity) {
+        for (PaymentEntity paymentEntity : listPaymentEntity) {
             listPaymentResponse.add(new PaymentResponse().id(UUID.fromString(paymentEntity.getUuid())).paymentName(paymentEntity.getPaymentName()));
         }
-        if(listPaymentResponse.size() == 0 ) {
+        if (listPaymentResponse.size() == 0) {
             listPaymentResponse = null;
         }
         PaymentListResponse paymentListResponse = new PaymentListResponse().paymentMethods(listPaymentResponse);

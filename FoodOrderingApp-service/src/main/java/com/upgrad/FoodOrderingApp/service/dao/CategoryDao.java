@@ -16,7 +16,7 @@ public class CategoryDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<CategoryEntity> getAllCategoriesOrderedByName(){
+    public List<CategoryEntity> getAllCategoriesOrderedByName() {
         try {
             return entityManager.createNamedQuery("getAllCategoriesOrderedByName", CategoryEntity.class).getResultList();
         } catch (NoResultException nre) {

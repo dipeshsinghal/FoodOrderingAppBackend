@@ -19,7 +19,7 @@ import java.util.List;
         @NamedQuery(name = "getItemsByCategoryAndRestaurant", query = "Select i from ItemEntity i, RestaurantItemEntity ri, CategoryItemEntity ci " +
                 "where ri.item.uuid = i.uuid and ci.item.uuid = i.uuid and ci.category.uuid =:categoryId and ri.restaurant.uuid =:restaurantId"),
         @NamedQuery(name = "getItemsByPopularity", query = "Select ie from ItemEntity ie where ie.id in ( Select oi.item.id from ItemEntity i, RestaurantItemEntity ri, OrderItemEntity oi " +
-                " where ri.item.id = i.id and oi.item.id = i.id and ri.restaurant.id = :restaurantId group by oi.item.id order by sum(oi.quantity) )"),
+                " where ri.item.id = i.id and oi.item.id = i.id and ri.restaurant.id = :restaurantId group by oi.item.id order by sum(oi.quantity) desc )"),
 })
 public class ItemEntity implements Serializable {
     @Id

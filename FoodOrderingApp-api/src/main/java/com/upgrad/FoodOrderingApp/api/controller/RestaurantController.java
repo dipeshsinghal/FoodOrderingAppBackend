@@ -2,7 +2,6 @@ package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.common.Utility;
 import com.upgrad.FoodOrderingApp.api.model.*;
-
 import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.businness.ItemService;
@@ -11,20 +10,22 @@ import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
-import com.upgrad.FoodOrderingApp.service.exception.*;
+import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
+import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
+import com.upgrad.FoodOrderingApp.service.exception.InvalidRatingException;
+import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(allowedHeaders="*", origins="*", exposedHeaders=("access-token"))
+@CrossOrigin(allowedHeaders = "*", origins = "*", exposedHeaders = ("access-token"))
 @RestController
 @RequestMapping("/")
 public class RestaurantController {
@@ -99,7 +100,7 @@ public class RestaurantController {
     public ResponseEntity<RestaurantDetailsResponse> getRestaurantDetails(
             @PathVariable("restaurant_id") final String restaurantId)
             throws RestaurantNotFoundException {
-        if(restaurantId == null || restaurantId.isEmpty()){
+        if (restaurantId == null || restaurantId.isEmpty()) {
             throw new RestaurantNotFoundException("RNF-001", "Restaurant id field should not be empty");
         }
 
@@ -120,14 +121,14 @@ public class RestaurantController {
     public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(
             @RequestHeader("authorization") final String authorization,
             @PathVariable("restaurant_id") final String restaurantId,
-            @RequestParam(name="customer_rating", required = true) Double customerRating)
+            @RequestParam(name = "customer_rating", required = true) Double customerRating)
             throws AuthorizationFailedException, RestaurantNotFoundException, InvalidRatingException {
 
         // Call authenticationService with access token came in authorization field.
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        if( restaurantId == null || restaurantId.isEmpty()) {
-            throw new RestaurantNotFoundException("RNF-002","Restaurant id field should not be empty");
+        if (restaurantId == null || restaurantId.isEmpty()) {
+            throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty");
         }
 
         RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurantId);
@@ -140,7 +141,7 @@ public class RestaurantController {
         return new ResponseEntity<RestaurantUpdatedResponse>(restaurantUpdatedResponse, HttpStatus.OK);
     }
 
-    private RestaurantDetailsResponseAddress getRestaurantDetailsResponseAddress(RestaurantEntity restaurantEntity)  {
+    private RestaurantDetailsResponseAddress getRestaurantDetailsResponseAddress(RestaurantEntity restaurantEntity) {
         return new RestaurantDetailsResponseAddress().id(UUID.fromString(restaurantEntity.getAddress().getUuid()))
                 .flatBuildingName(restaurantEntity.getAddress().getFlatBuilNo())
                 .locality(restaurantEntity.getAddress().getLocality())
@@ -150,7 +151,8 @@ public class RestaurantController {
                         .id(UUID.fromString(restaurantEntity.getAddress().getState().getUuid()))
                         .stateName(restaurantEntity.getAddress().getState().getStateName()));
     }
-    private RestaurantDetailsResponse getRestaurantDetailsResponse(RestaurantEntity restaurantEntity, List<CategoryList> listCategoryList)  {
+
+    private RestaurantDetailsResponse getRestaurantDetailsResponse(RestaurantEntity restaurantEntity, List<CategoryList> listCategoryList) {
 
         return new RestaurantDetailsResponse().id(UUID.fromString(restaurantEntity.getUuid()))
                 .restaurantName(restaurantEntity.getRestaurantName())
@@ -163,6 +165,7 @@ public class RestaurantController {
                 .address(getRestaurantDetailsResponseAddress(restaurantEntity))
                 .averagePrice(restaurantEntity.getAvgPrice());
     }
+
     private List<CategoryList> getCategoryListByRestaurantId(String restaurantId) {
         List<CategoryEntity> listCategory = categoryService.getCategoriesByRestaurant(restaurantId);
         List<CategoryList> listCategoryList = new ArrayList<>();
@@ -185,7 +188,7 @@ public class RestaurantController {
         return listCategoryList;
     }
 
-    private List<RestaurantList> getListRestaurantListFromListRestaurantEntity(List<RestaurantEntity> listRestaurantEntity){
+    private List<RestaurantList> getListRestaurantListFromListRestaurantEntity(List<RestaurantEntity> listRestaurantEntity) {
 
         List<RestaurantList> listRestaurantList = new ArrayList<>();
 
@@ -193,14 +196,14 @@ public class RestaurantController {
 
             List<CategoryEntity> listCategoryEntity = categoryService.getCategoriesByRestaurant(restaurantEntity.getUuid());
             StringBuilder sbCategory = new StringBuilder();
-            for(CategoryEntity c: listCategoryEntity){
+            for (CategoryEntity c : listCategoryEntity) {
                 sbCategory.append(c.getCategoryName() + ", ");
             }
 
             listRestaurantList.add(new RestaurantList().id(UUID.fromString(restaurantEntity.getUuid()))
                     .restaurantName(restaurantEntity.getRestaurantName())
                     .averagePrice(restaurantEntity.getAvgPrice())
-                    .categories(sbCategory.substring(0,sbCategory.length() - 2))
+                    .categories(sbCategory.substring(0, sbCategory.length() - 2))
                     .address(getRestaurantDetailsResponseAddress(restaurantEntity))
                     .customerRating(BigDecimal.valueOf(restaurantEntity.getCustomerRating()))
                     .numberCustomersRated(restaurantEntity.getNumberCustomersRated())

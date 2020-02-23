@@ -1,7 +1,9 @@
 package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.OrderDao;
-import com.upgrad.FoodOrderingApp.service.entity.*;
+import com.upgrad.FoodOrderingApp.service.entity.CouponEntity;
+import com.upgrad.FoodOrderingApp.service.entity.OrderEntity;
+import com.upgrad.FoodOrderingApp.service.entity.OrderItemEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CouponNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,9 @@ public class OrderService {
     @Autowired
     private OrderDao orderDao;
 
-    public CouponEntity getCouponByCouponId(String couponId) throws CouponNotFoundException{
-        CouponEntity couponEntity =  orderDao.getCouponByCouponUuid(couponId);
-        if( couponEntity == null ) {
+    public CouponEntity getCouponByCouponId(String couponId) throws CouponNotFoundException {
+        CouponEntity couponEntity = orderDao.getCouponByCouponUuid(couponId);
+        if (couponEntity == null) {
             throw new CouponNotFoundException("CPF-002", "No coupon by this id");
         }
         return couponEntity;
@@ -26,7 +28,7 @@ public class OrderService {
 
     public CouponEntity getCouponByCouponName(String couponName) throws CouponNotFoundException {
         CouponEntity couponEntity = orderDao.getCouponByCouponName(couponName);
-        if( couponEntity == null ) {
+        if (couponEntity == null) {
             throw new CouponNotFoundException("CPF-001", "No coupon by this name");
         }
         return couponEntity;
@@ -37,7 +39,7 @@ public class OrderService {
         try {
             return orderDao.saveOrder(orderEntity);
         } catch (Exception e) {
-           return null;
+            return null;
         }
     }
 

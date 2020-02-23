@@ -1,10 +1,12 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
-import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.api.model.CategoriesListResponse;
+import com.upgrad.FoodOrderingApp.api.model.CategoryDetailsResponse;
+import com.upgrad.FoodOrderingApp.api.model.CategoryListResponse;
+import com.upgrad.FoodOrderingApp.api.model.ItemList;
 import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
 import com.upgrad.FoodOrderingApp.service.businness.ItemService;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CategoryItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(allowedHeaders="*", origins="*", exposedHeaders=("access-token"))
+@CrossOrigin(allowedHeaders = "*", origins = "*", exposedHeaders = ("access-token"))
 @RestController
 @RequestMapping("/")
 public class CategoryController {
@@ -38,7 +40,7 @@ public class CategoryController {
 
         List<CategoryListResponse> listCategoryListResponse = null;
 
-        if(listCategoryEntity.size() != 0) {
+        if (listCategoryEntity.size() != 0) {
 
             listCategoryListResponse = new ArrayList<>();
 
@@ -61,14 +63,14 @@ public class CategoryController {
             @PathVariable("category_id") final String categoryId)
             throws CategoryNotFoundException {
 
-        if( categoryId == null || categoryId.isEmpty()) {
-            throw new CategoryNotFoundException("CNF-001","Category id field should not be empty");
+        if (categoryId == null || categoryId.isEmpty()) {
+            throw new CategoryNotFoundException("CNF-001", "Category id field should not be empty");
         }
 
         CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
 
         List<ItemList> listItemList = new ArrayList<ItemList>();
-        for(ItemEntity i : categoryEntity.getItems()){
+        for (ItemEntity i : categoryEntity.getItems()) {
             listItemList.add(new ItemList()
                     .id(UUID.fromString(i.getUuid()))
                     .itemType(ItemList.ItemTypeEnum.fromValue(i.getType().toString()))
@@ -76,7 +78,7 @@ public class CategoryController {
                     .price(i.getPrice()));
         }
 
-          //Disabling this code because Unit test are written differently
+        //Disabling this code because Unit test are written differently
 //        for(CategoryItemEntity ci : categoryEntity.getCategoryItem()){
 //            listItemList.add(new ItemList()
 //                    .id(UUID.fromString(ci.getItem().getUuid()))
@@ -90,6 +92,6 @@ public class CategoryController {
                 .categoryName(categoryEntity.getCategoryName())
                 .itemList(listItemList);
 
-        return new ResponseEntity<CategoryDetailsResponse>(categoryDetailsResponse,HttpStatus.OK);
+        return new ResponseEntity<CategoryDetailsResponse>(categoryDetailsResponse, HttpStatus.OK);
     }
 }

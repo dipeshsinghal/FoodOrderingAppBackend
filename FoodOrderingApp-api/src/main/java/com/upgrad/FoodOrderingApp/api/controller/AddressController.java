@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(allowedHeaders="*", origins="*", exposedHeaders=("access-token"))
+@CrossOrigin(allowedHeaders = "*", origins = "*", exposedHeaders = ("access-token"))
 @RestController
 @RequestMapping("/")
 public class AddressController {
@@ -57,7 +57,7 @@ public class AddressController {
         addressEntity.setState(stateEntity);
 
         //Call AddressService to create a new AddressEntity
-        AddressEntity createdAddressEntity =  addressService.saveAddress(addressEntity, customerEntity);
+        AddressEntity createdAddressEntity = addressService.saveAddress(addressEntity, customerEntity);
 
         SaveAddressResponse saveAddressResponse = new SaveAddressResponse().id(createdAddressEntity.getUuid()).status("ADDRESS SUCCESSFULLY REGISTERED");
 
@@ -77,9 +77,9 @@ public class AddressController {
         List<AddressEntity> listAddressEntity = addressService.getAllAddress(customerEntity);
 
         List<AddressList> listAddressList = null;
-        if(listAddressEntity.size() != 0 ) {
+        if (listAddressEntity.size() != 0) {
             listAddressList = new ArrayList<AddressList>();
-            for (AddressEntity addressEntity: listAddressEntity) {
+            for (AddressEntity addressEntity : listAddressEntity) {
                 AddressListState addressListState = new AddressListState()
                         .id(UUID.fromString(addressEntity.getState().getUuid()))
                         .stateName(addressEntity.getState().getStateName());
@@ -98,10 +98,6 @@ public class AddressController {
         return new ResponseEntity<AddressListResponse>(addressListResponse, HttpStatus.OK);
     }
 
-//    @RequestMapping(
-//            method = RequestMethod.DELETE,
-//            path = "/address/{address_id}",
-//            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @DeleteMapping("/address/{address_id}")
     public ResponseEntity<DeleteAddressResponse> deleteAddress(
             @RequestHeader("authorization") final String authorization,
@@ -111,13 +107,13 @@ public class AddressController {
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
         //Call AddressService to search AddressEntity
-        AddressEntity addressEntity =  addressService.getAddressByUUID(addressId, customerEntity);
+        AddressEntity addressEntity = addressService.getAddressByUUID(addressId, customerEntity);
 
         AddressEntity deletedAddressEntity = addressService.deleteAddress(addressEntity);
 
         DeleteAddressResponse deleteAddressResponse = new DeleteAddressResponse().id(UUID.fromString(deletedAddressEntity.getUuid())).status("ADDRESS DELETED SUCCESSFULLY");
 
-        return  new ResponseEntity<>(deleteAddressResponse, HttpStatus.OK);
+        return new ResponseEntity<>(deleteAddressResponse, HttpStatus.OK);
     }
 
     @RequestMapping(
@@ -130,9 +126,9 @@ public class AddressController {
 
         List<StatesList> listStatesList = null;
 
-        if( listStateEntity.size() != 0 ) {
+        if (listStateEntity.size() != 0) {
             listStatesList = new ArrayList<StatesList>();
-            for (StateEntity stateEntity: listStateEntity) {
+            for (StateEntity stateEntity : listStateEntity) {
                 listStatesList.add(new StatesList().id(UUID.fromString(stateEntity.getUuid())).stateName(stateEntity.getStateName()));
             }
         }

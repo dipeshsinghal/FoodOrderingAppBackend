@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class AddressService {
@@ -30,16 +29,16 @@ public class AddressService {
     @Transactional(propagation = Propagation.REQUIRED)
     public AddressEntity saveAddress(AddressEntity addressEntity, CustomerEntity customerEntity) throws SaveAddressException {
 
-        if ( addressEntity.getPincode() == null || !(addressEntity.getPincode().matches("^\\d{6,6}$"))) {
+        if (addressEntity.getPincode() == null || !(addressEntity.getPincode().matches("^\\d{6,6}$"))) {
             throw new SaveAddressException("SAR-002", "Invalid pincode.");
         }
 
-        if ( addressEntity.getFlatBuilNo() == null ||
+        if (addressEntity.getFlatBuilNo() == null ||
                 addressEntity.getFlatBuilNo().isEmpty() ||
                 addressEntity.getLocality() == null ||
                 addressEntity.getLocality().isEmpty() ||
                 addressEntity.getCity() == null ||
-                addressEntity.getCity().isEmpty() ) {
+                addressEntity.getCity().isEmpty()) {
             throw new SaveAddressException("SAR-001", "No field can be empty.");
         }
 
@@ -59,22 +58,22 @@ public class AddressService {
         return addressDao.deleteAddress(addressEntity);
     }
 
-    public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) throws AuthorizationFailedException, AddressNotFoundException{
-            CustomerAddressEntity customerAddressEntity = addressDao.getAddressByUUID(uuid, customerEntity.getUuid());
-            if(customerAddressEntity == null ) {
-                throw new AddressNotFoundException("ANF-003","No address by this id");
-            } else if ( customerAddressEntity.getCustomer() != customerEntity ) {
-                throw new AuthorizationFailedException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
-            } else {
-                return customerAddressEntity.getAddress();
-            }
+    public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) throws AuthorizationFailedException, AddressNotFoundException {
+        CustomerAddressEntity customerAddressEntity = addressDao.getAddressByUUID(uuid, customerEntity.getUuid());
+        if (customerAddressEntity == null) {
+            throw new AddressNotFoundException("ANF-003", "No address by this id");
+        } else if (customerAddressEntity.getCustomer() != customerEntity) {
+            throw new AuthorizationFailedException("ATHR-004", "You are not authorized to view/update/delete any one else's address");
+        } else {
+            return customerAddressEntity.getAddress();
+        }
     }
 
     public List<AddressEntity> getAllAddress(CustomerEntity customerEntity) {
 
         List<CustomerAddressEntity> listCustomerAddressEntity = addressDao.getAllCustomerAddress(customerEntity);
         List<AddressEntity> listAddressEntity = new ArrayList<>();
-        for (CustomerAddressEntity ca: listCustomerAddressEntity) {
+        for (CustomerAddressEntity ca : listCustomerAddressEntity) {
             listAddressEntity.add(ca.getAddress());
         }
 

@@ -109,7 +109,7 @@ public class CustomerService {
             throw new AuthenticationFailedException("ATH-001", "This contact number has not been registered!");
         }
 
-        String encryptedPassword = passwordCryptographyProvider.encrypt(password, customerEntity.getSalt());
+        String encryptedPassword = PasswordCryptographyProvider.encrypt(password, customerEntity.getSalt());
         if (!encryptedPassword.equals(customerEntity.getPassword())) {
             throw new AuthenticationFailedException("ATH-002", "Invalid Credentials");
         }
@@ -174,12 +174,12 @@ public class CustomerService {
             throw new UpdateCustomerException("UCR-001", "Weak password!");
         }
 
-        String encryptedOldPassword = passwordCryptographyProvider.encrypt(oldPassword, customerEntity.getSalt());
+        String encryptedOldPassword = PasswordCryptographyProvider.encrypt(oldPassword, customerEntity.getSalt());
         if (!encryptedOldPassword.equals(customerEntity.getPassword())) {
             throw new UpdateCustomerException("UCR-004", "Incorrect old password!");
         }
 
-        customerEntity.setPassword(passwordCryptographyProvider.encrypt(newPassword, customerEntity.getSalt()));
+        customerEntity.setPassword(PasswordCryptographyProvider.encrypt(newPassword, customerEntity.getSalt()));
 
         return customerDao.updateCustomer(customerEntity);
     }
