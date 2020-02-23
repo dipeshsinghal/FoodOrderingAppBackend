@@ -32,8 +32,10 @@ public class ItemDao {
             List<ItemEntity> listItemEntity = entityManager.createNamedQuery("getItemsByPopularity", ItemEntity.class).setParameter("restaurantId", restaurantId).getResultList();
             List<ItemEntity> subListItemEntity = new ArrayList<>();
             int listSize = listItemEntity.size();
-            if (listSize > 0) {
-                subListItemEntity.addAll(listItemEntity.subList(0, Math.min(listSize, 5)));
+            if (listSize > 5 ) {
+                subListItemEntity.addAll(listItemEntity.subList(0, 5));
+            } else {
+                subListItemEntity = listItemEntity;
             }
             return subListItemEntity;
         } catch (NoResultException nre) {
