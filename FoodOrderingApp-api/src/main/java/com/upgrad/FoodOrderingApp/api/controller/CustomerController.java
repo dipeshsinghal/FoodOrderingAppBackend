@@ -17,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin(allowedHeaders = "*", origins = "*", exposedHeaders = ("access-token"))
@@ -115,6 +117,10 @@ public class CustomerController {
                 .message("SIGNED IN SUCCESSFULLY");
         HttpHeaders headers = new HttpHeaders();
         headers.add("access-token", customerAuthEntity.getAccessToken());
+
+        List<String> header = new ArrayList<>();
+        header.add("access-token");
+        headers.setAccessControlExposeHeaders(header);
 
         return new ResponseEntity<LoginResponse>(loginResponse, headers, HttpStatus.OK);
 
