@@ -16,7 +16,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "getRestaurantsByRating", query = "select r from RestaurantEntity r order by customerRating desc"),
         @NamedQuery(name = "getRestaurantByUUID", query = "select r from RestaurantEntity r where r.uuid =:uuid"),
-        @NamedQuery(name = "getRestaurantsByName", query = "select r from RestaurantEntity r where r.restaurantName like:restaurantName")
+        @NamedQuery(name = "getRestaurantsByName", query = "select r from RestaurantEntity r where LOWER(r.restaurantName) like:restaurantName")
 })
 public class RestaurantEntity implements Serializable {
     @Id
