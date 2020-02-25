@@ -32,6 +32,13 @@ public class CustomerController {
     @Autowired
     private PasswordCryptographyProvider passwordCryptographyProvider;
 
+    /*
+     * This endpoint is used to singup a new user in the FoodOrderingAppBackend.
+     * input - signupUserRequest contain all user details like
+     *  First Name, Last Name, Email id, password, contact No.
+     *  output - Success - SignupUserResponse containing created user detail with its uuid
+     *           Failure - Failure Code  with message.
+     */
     @RequestMapping(
             method = RequestMethod.POST,
             path = "/customer/signup",
@@ -76,6 +83,12 @@ public class CustomerController {
 
     }
 
+    /*
+     * This endpoint is used to login user in the FoodOrderingAppBackend.
+     * input - authorization field containing Basic + Base64 Encoded String of "user name:password"
+     *  output - Success - Auth Token with user uuid
+     *           Failure - Failure Code  with message.
+     */
     @RequestMapping(
             method = RequestMethod.POST,
             path = "/customer/login",
@@ -126,6 +139,12 @@ public class CustomerController {
 
     }
 
+    /*
+     * This endpoint is used to logout user from the FoodOrderingAppBackend.
+     * input - authorization field containing auth token generated from user sign-in
+     *  output - Success - with user uuid
+     *           Failure - Failure Code  with message.
+     */
     @RequestMapping(
             method = RequestMethod.POST,
             path = "/customer/logout",
