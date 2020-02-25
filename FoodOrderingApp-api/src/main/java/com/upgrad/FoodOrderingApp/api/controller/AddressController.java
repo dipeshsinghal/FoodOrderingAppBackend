@@ -31,7 +31,14 @@ public class AddressController {
     @Autowired
     private AddressService addressService;
 
-
+    /*
+    * This endpoint is used to save address in the FoodOrderingAppBackend.
+    * input - authorization field containing auth token generated from user sign-in
+    * input - SaveAddressRequest contain all user details like
+    *  flat_building_name, locality, city, pincode, state_uuid,
+    *  output - Success - SaveAddressResponse containing created address detail with its uuid
+    *           Failure - Failure Code  with message.
+    */
     @RequestMapping(
             method = RequestMethod.POST,
             path = "/address",
@@ -63,7 +70,13 @@ public class AddressController {
 
         return new ResponseEntity<SaveAddressResponse>(saveAddressResponse, HttpStatus.CREATED);
     }
-
+    
+    /*
+     * This endpoint is used to get all address of a customer in the FoodOrderingAppBackend.
+     * input - authorization field containing auth token generated from user sign-in
+     *  output - Success - AddressListResponse - containing list of address for customer
+     *           Failure - Failure Code  with message.
+     */
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/address/customer",
