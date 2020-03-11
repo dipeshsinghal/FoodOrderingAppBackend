@@ -148,7 +148,10 @@ public class OrderController {
         // Call authenticationService with access token came in authorization field.
         CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        CouponEntity couponEntity = orderService.getCouponByCouponId(saveOrderRequest.getCouponId().toString());
+        CouponEntity couponEntity = null;
+        if(saveOrderRequest.getCouponId() != null && saveOrderRequest.getCouponId().toString().isEmpty()) {
+            couponEntity = orderService.getCouponByCouponId(saveOrderRequest.getCouponId().toString());
+        }
 
         PaymentEntity paymentEntity = paymentService.getPaymentByUUID(saveOrderRequest.getPaymentId().toString());
 
